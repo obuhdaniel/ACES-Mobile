@@ -1,38 +1,86 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+
+
+// Top-level function for background notification handling
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse response) {
+  // This function must be top-level or static
+  // You can't use instance methods here, so we'll need to handle this differently
+  Logger().i('Background notification tapped: ${response.payload}');
+  
+  // If you need to route based on the payload, you might need to use
+  // platform channels or store the payload for when the app resumes
+}
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
 
   bool _isTimezoneInitialized = false;
-   Function(String?)? _onNotificationTapCallback;
+  Function(String?)? _onNotificationTapCallback;
+  bool _isReleaseMode = kReleaseMode;
+  bool _isInitialized = false;
+  
+  // Logger instance with different configurations for debug/release
+  late Logger _logger;
 
   NotificationService._internal() {
+    _initializeLogger();
     _initializeTimeZone();
   }
 
-  // Initialize timezone only once
+  void _initializeLogger() {
+    _logger = Logger(
+      filter: DevelopmentFilter(),
+      printer: PrettyPrinter(
+        methodCount: 2,
+        errorMethodCount: 8,
+        lineLength: 120,
+        colors: true,
+        printEmojis: true,
+        printTime: true,
+      ),
+      output: ConsoleOutput(),
+    );
+  }
+
   void _initializeTimeZone() {
     if (!_isTimezoneInitialized) {
-      tz.initializeTimeZones();
-      tz.setLocalLocation(tz.getLocation('Africa/Lagos'));
-      _isTimezoneInitialized = true;
+      try {
+        tz.initializeTimeZones();
+        tz.setLocalLocation(tz.getLocation('Africa/Lagos'));
+        _isTimezoneInitialized = true;
+        _logger.i('Timezone initialized successfully');
+      } catch (e) {
+        _logger.e('Failed to initialize timezone', error: e);
+      }
     }
   }
 
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 
-  Future<NotificationAppLaunchDetails?> initialize(
-      {Function(String?)? onNotificationTap}) async {
-        _onNotificationTapCallback = onNotificationTap;
+  // Enable/disable notifications for testing
+  void setReleaseMode(bool isReleaseMode) {
+    _isReleaseMode = isReleaseMode;
+    _initializeLogger(); // Reinitialize logger with new mode
+    _logger.i('Release mode set to: $isReleaseMode');
+  }
+Future<NotificationAppLaunchDetails?> initialize({
+    Function(String?)? onNotificationTap,
+  }) async {
+    _onNotificationTapCallback = onNotificationTap;
+    _logger.i('Initializing Notification Service');
 
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -51,56 +99,87 @@ class NotificationService {
     );
 
     try {
-      // Get launch details first
+      if (_isReleaseMode) {
+        _logger.w('Notifications disabled in release mode');
+        return null;
+      }
+
       final NotificationAppLaunchDetails? launchDetails =
           await _notifications.getNotificationAppLaunchDetails();
+      _logger.d('Notification launch details: ${launchDetails?.didNotificationLaunchApp}');
 
       await _notifications.initialize(
         settings,
         onDidReceiveNotificationResponse: (NotificationResponse response) {
-          print('Notification response received: ${response.payload}');
-          if (_onNotificationTapCallback != null) {
-            _onNotificationTapCallback!(response.payload);
-          }
+          _logger.i('Notification tapped: ${response.payload}');
+          _onNotificationTapCallback?.call(response.payload);
         },
-        onDidReceiveBackgroundNotificationResponse: (NotificationResponse response) {
-          print('Background notification response: ${response.payload}');
-          // This handles background notifications on iOS
-          if (_onNotificationTapCallback != null) {
-            _onNotificationTapCallback!(response.payload);
-          }
-        },
+        // Use the top-level function for background handling
+        onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
       );
 
-
+      _isInitialized = true;
+      _logger.i('Notification service initialized successfully');
       return launchDetails;
-    } catch (e) {
-      print('Error initializing notifications: $e');
+    } catch (e, stackTrace) {
+      _logger.e('Error initializing notifications', 
+                error: e, 
+                stackTrace: stackTrace);
+      _isInitialized = false;
       return null;
     }
   }
 
-  /// Requests notification permissions for both Android and iOS
-  Future<bool> requestPermissions() async {
+  // Add this method to handle background notifications when app is in foreground
+  void handleBackgroundNotification(String? payload) {
+    if (payload != null) {
+      _logger.i('Processing background notification payload: $payload');
+      _onNotificationTapCallback?.call(payload);
+    }
+  }
+  
+    /// Requests notification permissions for both Android and iOS
+    Future<bool> requestPermissions() async {
+    _logger.i('Requesting notification permissions');
+    
     try {
+      if (_isReleaseMode) {
+        _logger.w('Permission requests disabled in release mode');
+        return false;
+      }
+
+      if (!_isInitialized) {
+        _logger.w('Notification service not initialized. Call initialize() first.');
+        return false;
+      }
+
       bool permissionsGranted = true;
 
-      final androidPlugin =
-          _notifications.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      
       if (androidPlugin != null) {
+        _logger.d('Requesting Android permissions');
         final bool? notificationsGranted =
             await androidPlugin.requestNotificationsPermission();
         final bool? exactAlarmsGranted =
             await androidPlugin.requestExactAlarmsPermission();
+        
+        _logger.d('Android permissions - Notifications: $notificationsGranted, Exact Alarms: $exactAlarmsGranted');
+        
         permissionsGranted =
             (notificationsGranted ?? false) && (exactAlarmsGranted ?? true);
+      } else {
+        _logger.w('Android notifications plugin not available');
       }
 
       final iosPlugin = _notifications.resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>();
+      
       if (iosPlugin != null) {
+        _logger.d('Requesting iOS permissions');
         final iosSettings = await iosPlugin.checkPermissions();
+        
         if (iosSettings?.isEnabled != true) {
           final bool? iosGranted = await iosPlugin.requestPermissions(
             alert: true,
@@ -108,63 +187,99 @@ class NotificationService {
             sound: true,
             critical: false,
           );
+          _logger.d('iOS permissions granted: $iosGranted');
           permissionsGranted = iosGranted ?? false;
+        } else {
+          _logger.d('iOS permissions already granted');
         }
+      } else {
+        _logger.w('iOS notifications plugin not available');
       }
 
+      _logger.i('Permission request completed: $permissionsGranted');
       return permissionsGranted;
-    } catch (e) {
-      print('Error requesting permissions: $e');
+    } catch (e, stackTrace) {
+      _logger.e('Error requesting permissions', 
+                error: e, 
+                stackTrace: stackTrace);
       return false;
     }
-  }
-
-  /// Checks if notification permissions are granted
+  }  /// Checks if notification permissions are granted
   Future<bool> arePermissionsGranted() async {
+    _logger.d('Checking notification permissions');
+    
     try {
-      final androidPlugin =
-          _notifications.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+      if (_isReleaseMode) {
+        _logger.d('Release mode - permissions considered not granted');
+        return false;
+      }
+
+      if (!_isInitialized) {
+        _logger.w('Notification service not initialized');
+        return false;
+      }
+
+      bool allGranted = true;
+
+      final androidPlugin = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      
       if (androidPlugin != null) {
         final bool? notificationsGranted =
             await androidPlugin.areNotificationsEnabled();
         final bool? exactAlarmsGranted =
             await androidPlugin.canScheduleExactNotifications();
+        
+        _logger.d('Android permissions - Enabled: $notificationsGranted, Exact: $exactAlarmsGranted');
+        
         if (!(notificationsGranted ?? false) || !(exactAlarmsGranted ?? true)) {
-          return false;
+          allGranted = false;
         }
       }
 
       final iosPlugin = _notifications.resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>();
+      
       if (iosPlugin != null) {
         final iosSettings = await iosPlugin.checkPermissions();
-        return iosSettings?.isEnabled ?? false;
+        _logger.d('iOS permissions: ${iosSettings?.isEnabled}');
+        if (!(iosSettings?.isEnabled ?? false)) {
+          allGranted = false;
+        }
       }
 
-      return true;
-    } catch (e) {
-      print('Error checking permissions: $e');
+      _logger.i('Permissions granted: $allGranted');
+      return allGranted;
+    } catch (e, stackTrace) {
+      _logger.e('Error checking permissions', 
+                error: e, 
+                stackTrace: stackTrace);
       return false;
     }
   }
 
-  // Add to NotificationService class
   Future<void> handleColdStart() async {
+    _logger.i('Handling cold start');
+    
     try {
+      if (_isReleaseMode) {
+        _logger.d('Skipping cold start handling in release mode');
+        return;
+      }
+
       final NotificationAppLaunchDetails? launchDetails =
           await _notifications.getNotificationAppLaunchDetails();
 
       if (launchDetails?.didNotificationLaunchApp ?? false) {
         final payload = launchDetails?.notificationResponse?.payload;
-        if (payload != null) {
-          // You might want to pass this to a callback or store it
-          print('App launched from notification with payload: $payload');
-          // You can trigger navigation from here or return the payload
-        }
+        _logger.i('App launched from notification with payload: $payload');
+      } else {
+        _logger.d('App not launched from notification');
       }
-    } catch (e) {
-      print('Error handling cold start: $e');
+    } catch (e, stackTrace) {
+      _logger.e('Error handling cold start', 
+                error: e, 
+                stackTrace: stackTrace);
     }
   }
 
@@ -175,21 +290,44 @@ class NotificationService {
     required String imageUrl,
     String? payload,
   }) async {
-    if (!await arePermissionsGranted()) {
-      final granted = await requestPermissions();
-      if (!granted) return;
+    _logger.i('Showing image notification: $title');
+    
+    if (_isReleaseMode) {
+      _logger.w('Notification suppressed in release mode: $title');
+      return;
     }
 
-    // 1. Download the image to a temp file
+    if (!_isInitialized) {
+      _logger.e('Notification service not initialized. Call initialize() first.');
+      return;
+    }
+
+    final bool hasPermissions = await arePermissionsGranted();
+    if (!hasPermissions) {
+      _logger.w('No notification permissions, requesting...');
+      final granted = await requestPermissions();
+      if (!granted) {
+        _logger.e('Cannot show notification: Permissions not granted');
+        return;
+      }
+    }
+
     final Directory tempDir = await getTemporaryDirectory();
     final String filePath = '${tempDir.path}/notif_$id.jpg';
 
     try {
+      _logger.d('Downloading image from: $imageUrl');
       final response = await http.get(Uri.parse(imageUrl));
+      
+      if (response.statusCode != 200) {
+        _logger.e('Failed to download image. Status code: ${response.statusCode}');
+        throw Exception('HTTP ${response.statusCode}');
+      }
+
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
+      _logger.d('Image saved to: $filePath');
 
-      // 2. Use BigPicture with downloaded file
       final bigPicture = BigPictureStyleInformation(
         FilePathAndroidBitmap(file.path),
         contentTitle: title,
@@ -212,12 +350,22 @@ class NotificationService {
         iOS: iosDetails,
       );
 
+      _logger.d('Showing notification with ID: $id');
       await _notifications.show(id, title, body, details, payload: payload);
-    } catch (e) {
-      print("Error loading image: $e");
-      // fallback to simple notification if image fails
+      _logger.i('Image notification shown successfully: $title');
+
+    } catch (e, stackTrace) {
+      _logger.e('Error showing image notification: $title', 
+                error: e, 
+                stackTrace: stackTrace);
+      
+      _logger.w('Falling back to simple notification');
       await showSimpleNotification(
-          id: id, title: title, body: body, payload: payload);
+        id: id, 
+        title: title, 
+        body: body, 
+        payload: payload
+      );
     }
   }
 
@@ -228,31 +376,52 @@ class NotificationService {
     required String body,
     String? payload,
   }) async {
-    if (!await arePermissionsGranted()) {
+    _logger.i('Showing simple notification: $title');
+    
+    if (_isReleaseMode) {
+      _logger.w('Notification suppressed in release mode: $title');
+      return;
+    }
+
+    if (!_isInitialized) {
+      _logger.e('Notification service not initialized. Call initialize() first.');
+      return;
+    }
+
+    final bool hasPermissions = await arePermissionsGranted();
+    if (!hasPermissions) {
+      _logger.w('No notification permissions, requesting...');
       final granted = await requestPermissions();
       if (!granted) {
-        print('Cannot show notification: Permissions not granted');
+        _logger.e('Cannot show notification: Permissions not granted');
         return;
       }
     }
 
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'simple_channel',
-      'Simple Notifications',
-      channelDescription: 'Instant notifications',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
+    try {
+      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+        'simple_channel',
+        'Simple Notifications',
+        channelDescription: 'Instant notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+      );
 
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+      const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+      const NotificationDetails details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
 
-    const NotificationDetails details = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
+      _logger.d('Showing notification with ID: $id');
+      await _notifications.show(id, title, body, details, payload: payload);
+      _logger.i('Simple notification shown successfully: $title');
 
-    await _notifications.show(id, title, body, details, payload: payload);
+    } catch (e, stackTrace) {
+      _logger.e('Error showing simple notification: $title', 
+                error: e, 
+                stackTrace: stackTrace);
+    }
   }
 
   // 2. Schedule Notification (at specific DateTime)
@@ -263,6 +432,12 @@ class NotificationService {
     required DateTime scheduledTime,
     String? payload,
   }) async {
+    // Skip scheduling in release mode
+    if (_isReleaseMode) {
+      print('Notification scheduling suppressed in release mode: $title');
+      return;
+    }
+
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
       if (!granted) {
@@ -271,7 +446,6 @@ class NotificationService {
       }
     }
 
-    // Don't schedule if the time has already passed
     if (scheduledTime.isBefore(DateTime.now())) {
       return;
     }
@@ -292,7 +466,6 @@ class NotificationService {
       iOS: iosDetails,
     );
 
-    // Convert DateTime to TZDateTime using the local timezone
     final tz.TZDateTime tzScheduledTime =
         tz.TZDateTime.from(scheduledTime, tz.local);
 
@@ -307,46 +480,6 @@ class NotificationService {
     );
   }
 
-  // 3. Interval-based Notification (repeats at intervals)
-  // Future<void> scheduleIntervalNotification({
-  //   required int id,
-  //   required String title,
-  //   required String body,
-  //   required RepeatInterval interval,
-  //   String? payload,
-  // }) async {
-  //   if (!await arePermissionsGranted()) {
-  //     final granted = await requestPermissions();
-  //     if (!granted) {
-  //       print('Cannot show notification: Permissions not granted');
-  //       return;
-  //     }
-  //   }
-
-  //   const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-  //     'interval_channel',
-  //     'Interval Notifications',
-  //     channelDescription: 'Repeating interval notifications',
-  //     importance: Importance.high,
-  //     priority: Priority.high,
-  //   );
-
-  //   const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
-
-  //   const NotificationDetails details = NotificationDetails(
-  //     android: androidDetails,
-  //     iOS: iosDetails,
-  //   );
-
-  //   await _notifications.zonedSchedule(
-  //     id,
-  //     title,
-  //     body,
-  //     details,
-  //     payload: payload,
-  //   );
-  // }
-
   // 4. Daily Notification (at specific time each day)
   Future<void> scheduleDailyNotification({
     required int id,
@@ -355,6 +488,12 @@ class NotificationService {
     required TimeOfDay notificationTime,
     String? payload,
   }) async {
+    // Skip scheduling in release mode
+    if (_isReleaseMode) {
+      print('Daily notification suppressed in release mode: $title');
+      return;
+    }
+
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
       if (!granted) {
@@ -381,7 +520,6 @@ class NotificationService {
 
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
-    // Calculate first notification time
     tz.TZDateTime scheduledTime = tz.TZDateTime(
       tz.local,
       now.year,
@@ -417,6 +555,12 @@ class NotificationService {
     required TimeOfDay notificationTime,
     String? payload,
   }) async {
+    // Skip scheduling in release mode
+    if (_isReleaseMode) {
+      print('Weekly notification suppressed in release mode: $title');
+      return;
+    }
+
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
       if (!granted) {
@@ -443,7 +587,6 @@ class NotificationService {
 
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
-    // Calculate first notification time
     int daysUntilNext = ((day.value % 7) - now.weekday + 7) % 7;
     if (daysUntilNext == 0 &&
         (now.hour > notificationTime.hour ||
@@ -482,6 +625,12 @@ class NotificationService {
     required DateTime deadline,
     String? payload,
   }) async {
+    // Skip scheduling in release mode
+    if (_isReleaseMode) {
+      print('Todo notification suppressed in release mode: $title');
+      return;
+    }
+
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
       if (!granted) {
@@ -495,7 +644,6 @@ class NotificationService {
       tz.local,
     );
 
-    // Don't schedule if the time has already passed
     if (notificationTime.isBefore(tz.TZDateTime.now(tz.local))) {
       return;
     }

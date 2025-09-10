@@ -134,7 +134,7 @@ class _JournalListPageState extends State<JournalListPage>
             children: [
               Text(
                 "My Journal",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1A1A1A),
@@ -143,7 +143,7 @@ class _JournalListPageState extends State<JournalListPage>
               ),
               Text(
                 "${journalProvider.journals.length} entries",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey[600],
@@ -252,7 +252,7 @@ class _JournalListPageState extends State<JournalListPage>
           const SizedBox(height: 24),
           Text(
             "Your Journal Awaits! ✍️",
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF1A1A1A),
@@ -261,7 +261,7 @@ class _JournalListPageState extends State<JournalListPage>
           const SizedBox(height: 8),
           Text(
             "Start writing your thoughts and memories",
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 14,
               color: Colors.grey[600],
             ),
@@ -282,7 +282,7 @@ class _JournalListPageState extends State<JournalListPage>
               ),
               child: Text(
                 "Tap  to get started",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -361,7 +361,7 @@ class _JournalListPageState extends State<JournalListPage>
                             Expanded(
                               child: Text(
                                 journal.title,
-                                style: GoogleFonts.inter(
+                                style:  GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xFF1A1A1A),
@@ -385,7 +385,7 @@ class _JournalListPageState extends State<JournalListPage>
                               ),
                               child: Text(
                                 journal.category,
-                                style: GoogleFonts.inter(
+                                style:  GoogleFonts.poppins(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                   color: journal.color,
@@ -397,7 +397,7 @@ class _JournalListPageState extends State<JournalListPage>
                         const SizedBox(height: 8),
                         Text(
                           journal.content,
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 14,
                             color: Colors.grey[600],
                             height: 1.4,
@@ -416,7 +416,7 @@ class _JournalListPageState extends State<JournalListPage>
                             const SizedBox(width: 4),
                             Text(
                               _formatDateTime(journal.date, journal.time),
-                              style: GoogleFonts.inter(
+                              style:  GoogleFonts.poppins(
                                 fontSize: 12,
                                 color: Colors.grey[500],
                                 fontWeight: FontWeight.w500,
@@ -588,7 +588,7 @@ class _JournalListPageState extends State<JournalListPage>
                       children: [
                         Text(
                           journal.title,
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: const Color(0xFF1A1A1A),
@@ -598,7 +598,7 @@ class _JournalListPageState extends State<JournalListPage>
                         ),
                         Text(
                           journal.category,
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 12,
                             color: journal.color,
                             fontWeight: FontWeight.w500,
@@ -616,7 +616,7 @@ class _JournalListPageState extends State<JournalListPage>
               leading: const Icon(Icons.visibility_rounded, color: Colors.blue),
               title: Text(
                 'View Journal',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black87),
+                style:  GoogleFonts.poppins(fontWeight: FontWeight.w500, color: Colors.black87),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -627,7 +627,7 @@ class _JournalListPageState extends State<JournalListPage>
               leading: const Icon(Icons.edit_rounded, color: Colors.orange),
               title: Text(
                 'Edit Journal',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black87),
+                style:  GoogleFonts.poppins(fontWeight: FontWeight.w500, color: Colors.black87),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -640,7 +640,7 @@ class _JournalListPageState extends State<JournalListPage>
               leading: const Icon(Icons.delete_outline_rounded, color: Colors.red),
               title: Text(
                 'Delete Journal',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black87),
+                style:  GoogleFonts.poppins(fontWeight: FontWeight.w500, color: Colors.black87),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -710,7 +710,7 @@ class _JournalListPageState extends State<JournalListPage>
       SnackBar(
         content: Text(
           '"${journal.title}" added to favorites',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+          style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.pink,
         behavior: SnackBarBehavior.floating,
@@ -729,18 +729,18 @@ class _JournalListPageState extends State<JournalListPage>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Delete Journal',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          style:  GoogleFonts.poppins(fontWeight: FontWeight.w600),
         ),
         content: Text(
           'Are you sure you want to delete "${journal.title}"? This action cannot be undone.',
-          style: GoogleFonts.inter(),
+          style:  GoogleFonts.poppins(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.inter(color: Colors.grey[600]),
+              style:  GoogleFonts.poppins(color: Colors.grey[600]),
             ),
           ),
           ElevatedButton(
@@ -753,7 +753,7 @@ class _JournalListPageState extends State<JournalListPage>
                   SnackBar(
                     content: Text(
                       '"${journal.title}" deleted successfully',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                      style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     backgroundColor: Colors.red,
                     behavior: SnackBarBehavior.floating,
@@ -770,7 +770,7 @@ class _JournalListPageState extends State<JournalListPage>
                             SnackBar(
                               content: Text(
                                 'Error undoing delete: $e',
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                                style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                               ),
                               backgroundColor: Colors.red,
                             ),
@@ -785,7 +785,7 @@ class _JournalListPageState extends State<JournalListPage>
                   SnackBar(
                     content: Text(
                       'Error deleting journal: $e',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                      style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     backgroundColor: Colors.red,
                   ),
@@ -797,7 +797,7 @@ class _JournalListPageState extends State<JournalListPage>
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            child: Text('Delete', style: GoogleFonts.inter()),
+            child: Text('Delete', style:  GoogleFonts.poppins()),
           ),
         ],
       ),

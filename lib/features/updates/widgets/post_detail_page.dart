@@ -199,7 +199,7 @@ Widget _buildHeroImage() {
               const SizedBox(width: 6),
               Text(
                 _getPostTypeLabel(),
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts. poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: _getPostTypeColor(),
@@ -217,7 +217,7 @@ Widget _buildHeroImage() {
           ),
           child: Text(
             formatRelativeTime(widget.post.updatedAt),
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 12,
               color: Colors.grey.shade600,
               fontWeight: FontWeight.w500,
@@ -231,7 +231,7 @@ Widget _buildHeroImage() {
   Widget _buildPostTitle() {
     return Text(
       widget.post.title,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 28,
         fontWeight: FontWeight.w800,
         color: const Color(0xFF1A1D29),
@@ -266,7 +266,7 @@ Widget _buildHeroImage() {
               children: [
                 Text(
                   'ACES UNIBEN',
-                  style: GoogleFonts.nunitoSans(
+                  style: GoogleFonts. poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF1A1D29),
@@ -274,7 +274,7 @@ Widget _buildHeroImage() {
                 ),
                 Text(
                   'Published ${formatRelativeTime( widget.post.updatedAt)}',
-                  style: GoogleFonts.nunitoSans(
+                  style: GoogleFonts. poppins(
                     fontSize: 12,
                     color: Colors.grey.shade600,
                   ),
@@ -307,7 +307,7 @@ Widget _buildHeroImage() {
       ),
       child: Text(
         '${readTime}m read',
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts. poppins(
           fontSize: 11,
           fontWeight: FontWeight.w500,
           color: Colors.grey.shade700,
@@ -332,7 +332,7 @@ Widget _buildHeroImage() {
       ),
       child: SelectableText(
         widget.post.description ?? '',
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts. poppins(
           fontSize: 16,
           color: const Color(0xFF2D3748),
           height: 1.7,
@@ -431,7 +431,7 @@ Widget _buildHeroImage() {
       SnackBar(
         content: Text(
           isBookmarked ? 'Post bookmarked' : 'Bookmark removed',
-          style: GoogleFonts.nunitoSans(),
+          style: GoogleFonts. poppins(),
         ),
         duration: const Duration(seconds: 2),
         backgroundColor: AppTheme.primaryTeal,
@@ -469,7 +469,7 @@ Widget _buildHeroImage() {
           const SizedBox(height: 20),
           Text(
             'Share Post',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -517,7 +517,7 @@ Widget _buildHeroImage() {
             const SizedBox(height: 8),
             Text(
               label,
-              style: GoogleFonts.nunitoSans(
+              style: GoogleFonts. poppins(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -550,7 +550,7 @@ Widget _buildHeroImage() {
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.flag_outlined),
-              title: Text('Report Post', style: GoogleFonts.nunitoSans()),
+              title: Text('Report Post', style: GoogleFonts. poppins()),
               onTap: () {
                 Navigator.pop(context);
                 // Implement report functionality
@@ -558,7 +558,7 @@ Widget _buildHeroImage() {
             ),
             ListTile(
               leading: const Icon(Icons.block_outlined),
-              title: Text('Hide Post', style: GoogleFonts.nunitoSans()),
+              title: Text('Hide Post', style: GoogleFonts. poppins()),
               onTap: () {
                 Navigator.pop(context);
                 // Implement hide functionality

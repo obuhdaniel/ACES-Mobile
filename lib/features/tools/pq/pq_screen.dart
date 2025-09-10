@@ -47,7 +47,7 @@ class _PastQuestionsAppState extends State<PastQuestionsApp>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: GoogleFonts.inter().fontFamily,
+        fontFamily:  GoogleFonts.poppins().fontFamily,
         useMaterial3: true,
       ),
       home: const PastQuestionsPage(),
@@ -290,7 +290,7 @@ Widget _buildModernHeader(BuildContext context) {
           children: [
             Text(
               "Past Questions",
-              style: GoogleFonts.inter(
+              style:  GoogleFonts.poppins(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF1A1A1A),
@@ -299,7 +299,7 @@ Widget _buildModernHeader(BuildContext context) {
             ),
             Text(
               "Choose your academic level",
-              style: GoogleFonts.inter(
+              style:  GoogleFonts.poppins(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[600],
@@ -394,7 +394,7 @@ Widget _buildLevelCard(AcademicLevel level, int index) {
                 /// Level name
                 Text(
                   level.name,
-                  style: GoogleFonts.inter(
+                  style:  GoogleFonts.poppins(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF1A1A1A),
@@ -409,25 +409,25 @@ Widget _buildLevelCard(AcademicLevel level, int index) {
 
                 SizedBox(height: 4.h),
 
-                /// Size info
-                Row(
-                  children: [
-                    Icon(
-                      Icons.storage_rounded,
-                      size: 16.sp,
-                      color: Colors.grey[600],
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      level.size,
-                      style: GoogleFonts.inter(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
+                // /// Size info
+                // Row(
+                //   children: [
+                //     Icon(
+                //       Icons.storage_rounded,
+                //       size: 16.sp,
+                //       color: Colors.grey[600],
+                //     ),
+                //     SizedBox(width: 4.w),
+                //     Text(
+                //       level.size,
+                //       style:  GoogleFonts.poppins(
+                //         fontSize: 14.sp,
+                //         color: Colors.grey[600],
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                //     ),
+                //   ],
+                // ),
              
               ],
             ),
@@ -575,7 +575,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
             children: [
               Text(
                 '${widget.level.name} Resources',
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1A1A1A),
@@ -583,7 +583,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
               ),
               Text(
                 'Select semester to access',
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
@@ -649,7 +649,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                     children: [
                       Text(
                         'Quick Tip',
-                        style: GoogleFonts.inter(
+                        style:  GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Colors.blue[900],
@@ -657,7 +657,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                       ),
                       Text(
                         'All files will open in Google Drive. Make sure you\'re logged in.',
-                        style: GoogleFonts.inter(
+                        style:  GoogleFonts.poppins(
                           fontSize: 13,
                           color: Colors.blue[700],
                         ),
@@ -726,7 +726,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                     child: Center(
                       child: Text(
                         semester.icon,
-                        style: GoogleFonts.inter(
+                        style:  GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
@@ -744,55 +744,55 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                       children: [
                         Text(
                           semester.name,
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF1A1A1A),
                           ),
                         ),
-                        Text(
-                          semester.description,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        // Text(
+                        //   semester.description,
+                        //   style:  GoogleFonts.poppins(
+                        //     fontSize: 14,
+                        //     color: Colors.grey[600],
+                        //   ),
+                        // ),
                         
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.folder_rounded,
-                                    size: 14,
-                                    color: Colors.grey[600],
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '${semester.files} Files',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        // const SizedBox(height: 12),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       padding: const EdgeInsets.symmetric(
+                        //         horizontal: 12,
+                        //         vertical: 6,
+                        //       ),
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.grey[100],
+                        //         borderRadius: BorderRadius.circular(20),
+                        //       ),
+                        //       child: Row(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         children: [
+                        //           Icon(
+                        //             Icons.folder_rounded,
+                        //             size: 14,
+                        //             color: Colors.grey[600],
+                        //           ),
+                        //           const SizedBox(width: 4),
+                        //           Text(
+                        //             '${semester.files} Files',
+                        //             style:  GoogleFonts.poppins(
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w600,
+                        //               color: Colors.grey[700],
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
                             
-                          ],
-                        ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -823,7 +823,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                       const SizedBox(height: 8),
                       Text(
                         'Open Drive',
-                        style: GoogleFonts.inter(
+                        style:  GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[600],
@@ -853,7 +853,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
       SnackBar(
         content: Text(
           message,
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             color: Colors.white,
           ),

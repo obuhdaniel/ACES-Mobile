@@ -1,6 +1,7 @@
-import 'package:aces_uniben/features/learn/page.dart';
 import 'package:aces_uniben/features/profile/scheduler/reminder_provider.dart';
+import 'package:aces_uniben/services/check_notifications_permissions.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class AppTheme {
@@ -30,9 +31,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text(
+        title:Text(
           'Learning Reminders',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),
@@ -96,9 +97,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
             size: 32,
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'Stay Consistent!',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -107,7 +108,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
           const SizedBox(height: 4),
           Text(
             'Set up daily reminders to keep your learning on track',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: Colors.white.withOpacity(0.9),
               fontSize: 16,
             ),
@@ -147,9 +148,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                   Text(
                     'Daily Reminders',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: AppTheme.textPrimary,
@@ -157,7 +158,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                   ),
                   Text(
                     settings.isReminderEnabled ? 'Active' : 'Disabled',
-                    style: const TextStyle(
+                    style:  GoogleFonts.poppins(
                       color: AppTheme.textSecondary,
                       fontSize: 14,
                     ),
@@ -189,13 +190,13 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+             Row(
               children: [
                 Icon(Icons.calendar_today, color: AppTheme.primaryTeal),
                 SizedBox(width: 12),
                 Text(
                   'Learning Days',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -206,7 +207,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
             const SizedBox(height: 12),
             Text(
               '${settings.selectedDays.length} day${settings.selectedDays.length != 1 ? 's' : ''} selected: ${settings.selectedDays.join(', ')}',
-              style: const TextStyle(
+              style:  GoogleFonts.poppins(
                 color: AppTheme.textSecondary,
                 fontSize: 14,
               ),
@@ -223,9 +224,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-                child: const Text(
+                child:Text(
                   'Select Days',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: AppTheme.primaryTeal,
                     fontWeight: FontWeight.w500,
                   ),
@@ -248,13 +249,13 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+             Row(
               children: [
                 Icon(Icons.access_time, color: AppTheme.primaryTeal),
                 SizedBox(width: 12),
                 Text(
                   'Reminder Time',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -265,7 +266,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
             const SizedBox(height: 12),
             Text(
               'Daily at ${settings.selectedTime.format(context)}',
-              style: const TextStyle(
+              style:  GoogleFonts.poppins(
                 color: AppTheme.textSecondary,
                 fontSize: 14,
               ),
@@ -282,9 +283,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-                child: const Text(
+                child:Text(
                   'Change Time',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: AppTheme.primaryTeal,
                     fontWeight: FontWeight.w500,
                   ),
@@ -307,13 +308,13 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+             Row(
               children: [
                 Icon(Icons.code, color: AppTheme.primaryTeal),
                 SizedBox(width: 12),
                 Text(
                   'Tech Focus',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -324,7 +325,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
             const SizedBox(height: 12),
             Text(
               settings.selectedTechPart,
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 color: AppTheme.textSecondary,
                 fontSize: 14,
               ),
@@ -341,9 +342,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-                child: const Text(
+                child:Text(
                   'Change Focus',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: AppTheme.primaryTeal,
                     fontWeight: FontWeight.w500,
                   ),
@@ -368,13 +369,13 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+             Row(
               children: [
                 Icon(Icons.preview, color: AppTheme.darkTeal),
                 SizedBox(width: 12),
                 Text(
                   'Reminder Preview',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkTeal,
@@ -408,9 +409,9 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                       Text(
                           'Time to learn!',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                             color: AppTheme.textPrimary,
@@ -418,7 +419,7 @@ class _ReminderSettingsScreenState extends State<ReminderSettingsScreen> {
                         ),
                         Text(
                           'Ready to practice ${settings.selectedTechPart}?',
-                          style: const TextStyle(
+                          style:  GoogleFonts.poppins(
                             color: AppTheme.textSecondary,
                             fontSize: 14,
                           ),
@@ -533,7 +534,7 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
           ),
 
           // Header
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               children: [
@@ -541,7 +542,7 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
                 SizedBox(width: 12),
                 Text(
                   'Select Learning Days',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -572,8 +573,8 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppTheme.primaryTeal),
                     ),
-                    child: const Text('Weekdays',
-                        style: TextStyle(color: AppTheme.primaryTeal)),
+                    child:Text('Weekdays',
+                        style: GoogleFonts.poppins(color: AppTheme.primaryTeal)),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -587,8 +588,8 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppTheme.primaryTeal),
                     ),
-                    child: const Text('Every Day',
-                        style: TextStyle(color: AppTheme.primaryTeal)),
+                    child:Text('Every Day',
+                        style: GoogleFonts.poppins(color: AppTheme.primaryTeal)),
                   ),
                 ),
               ],
@@ -615,7 +616,7 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text('Cancel',
-                        style: TextStyle(color: Colors.grey[700])),
+                        style: GoogleFonts.poppins(color: Colors.grey[700])),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -631,7 +632,7 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
                       backgroundColor: AppTheme.primaryTeal,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child: const Text('Apply', style: TextStyle(color: Colors.white)),
+                    child:Text('Apply', style: GoogleFonts.poppins(color: Colors.white)),
                   ),
                 ),
               ],
@@ -675,7 +676,7 @@ class _DaySelectionModalState extends State<DaySelectionModal> {
               const SizedBox(width: 12),
               Text(
                 day,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: isSelected ? AppTheme.darkTeal : AppTheme.textPrimary,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
@@ -739,7 +740,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
           ),
 
           // Header
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               children: [
@@ -747,7 +748,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
                 SizedBox(width: 12),
                 Text(
                   'Select Reminder Time',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -772,7 +773,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
                 const SizedBox(width: 16),
                 Text(
                   tempSelectedTime.format(context),
-                  style: const TextStyle(
+                  style:  GoogleFonts.poppins(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.darkTeal,
@@ -790,9 +791,9 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+               Text(
                   'Quick Select',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -840,9 +841,9 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
                   }
                 },
                 icon: const Icon(Icons.edit_calendar, color: AppTheme.primaryTeal),
-                label: const Text(
+                label:Text(
                   'Custom Time',
-                  style: TextStyle(color: AppTheme.primaryTeal),
+                  style: GoogleFonts.poppins(color: AppTheme.primaryTeal),
                 ),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppTheme.primaryTeal),
@@ -867,7 +868,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text('Cancel',
-                        style: TextStyle(color: Colors.grey[700])),
+                        style: GoogleFonts.poppins(color: Colors.grey[700])),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -881,7 +882,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
                       backgroundColor: AppTheme.primaryTeal,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child: const Text('Apply', style: TextStyle(color: Colors.white)),
+                    child:Text('Apply', style: GoogleFonts.poppins(color: Colors.white)),
                   ),
                 ),
               ],
@@ -912,7 +913,7 @@ class _TimeSelectionModalState extends State<TimeSelectionModal> {
         ),
         child: Text(
           time.format(context),
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: isSelected ? Colors.white : AppTheme.textPrimary,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
@@ -983,7 +984,7 @@ class _TechPartSelectionModalState extends State<TechPartSelectionModal> {
           ),
 
           // Header
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               children: [
@@ -991,7 +992,7 @@ class _TechPartSelectionModalState extends State<TechPartSelectionModal> {
                 SizedBox(width: 12),
                 Text(
                   'Select Tech Focus',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textPrimary,
@@ -1056,7 +1057,7 @@ class _TechPartSelectionModalState extends State<TechPartSelectionModal> {
                           Expanded(
                             child: Text(
                               techPart['name'],
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: isSelected
                                     ? FontWeight.w600
@@ -1097,7 +1098,7 @@ class _TechPartSelectionModalState extends State<TechPartSelectionModal> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text('Cancel',
-                        style: TextStyle(color: Colors.grey[700])),
+                        style: GoogleFonts.poppins(color: Colors.grey[700])),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -1111,7 +1112,7 @@ class _TechPartSelectionModalState extends State<TechPartSelectionModal> {
                       backgroundColor: AppTheme.primaryTeal,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child: const Text('Apply', style: TextStyle(color: Colors.white)),
+                    child:Text('Apply', style: GoogleFonts.poppins(color: Colors.white)),
                   ),
                 ),
               ],
@@ -1145,14 +1146,20 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
   TimeOfDay selectedTime = const TimeOfDay(hour: 9, minute: 0);
   String selectedTechPart = 'Web Development';
 
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text(
+        title:Text(
           'Setup Learning Reminders',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         backgroundColor: AppTheme.primaryTeal,
         elevation: 0,
@@ -1235,9 +1242,9 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
                         side: const BorderSide(color: AppTheme.primaryTeal),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: const Text(
+                      child:Text(
                         'Back',
-                        style: TextStyle(color: AppTheme.primaryTeal),
+                        style: GoogleFonts.poppins(color: AppTheme.primaryTeal),
                       ),
                     ),
                   ),
@@ -1251,7 +1258,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
                     ),
                     child: Text(
                       currentStep == 2 ? 'Finish Setup' : 'Next',
-                      style: const TextStyle(
+                      style:  GoogleFonts.poppins(
                           color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -1281,18 +1288,18 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+       Text(
           'When do you want to learn?',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppTheme.textPrimary,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+       Text(
           'Choose the days when you want to receive learning reminders',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             color: AppTheme.textSecondary,
           ),
@@ -1323,9 +1330,9 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
         const SizedBox(height: 24),
 
         // Individual day selection
-        const Text(
+       Text(
           'Or select individual days:',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: AppTheme.textPrimary,
@@ -1360,18 +1367,18 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+         Text(
             'What time works best?',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: AppTheme.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+         Text(
             'Pick a time when you\'re usually free to learn',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 16,
               color: AppTheme.textSecondary,
             ),
@@ -1396,7 +1403,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
                   const SizedBox(height: 16),
                   Text(
                     selectedTime.format(context),
-                    style: const TextStyle(
+                    style:  GoogleFonts.poppins(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.darkTeal,
@@ -1410,9 +1417,9 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
           const SizedBox(height: 32),
 
           // Suggested times
-          const Text(
+         Text(
             'Suggested Times:',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: AppTheme.textPrimary,
@@ -1453,9 +1460,9 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
                 }
               },
               icon: const Icon(Icons.edit, color: AppTheme.primaryTeal),
-              label: const Text(
+              label:Text(
                 'Choose Custom Time',
-                style: TextStyle(color: AppTheme.primaryTeal),
+                style: GoogleFonts.poppins(color: AppTheme.primaryTeal),
               ),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppTheme.primaryTeal),
@@ -1472,18 +1479,18 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+       Text(
           'What do you want to learn?',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppTheme.textPrimary,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+       Text(
           'Choose your main tech focus area',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             color: AppTheme.textSecondary,
           ),
@@ -1566,7 +1573,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
             const SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: isSelected ? Colors.white : AppTheme.primaryTeal,
                 fontWeight: FontWeight.w600,
               ),
@@ -1601,7 +1608,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
         child: Center(
           child: Text(
             day,
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: isSelected ? Colors.white : AppTheme.textPrimary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
@@ -1641,7 +1648,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
             Text(
               '$label\n${time.format(context)}',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: isSelected ? Colors.white : AppTheme.textPrimary,
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
@@ -1681,7 +1688,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
             const SizedBox(height: 12),
             Text(
               tech['name'],
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: isSelected ? Colors.white : AppTheme.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -1716,7 +1723,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
         currentStep++;
       });
     } else {
-      // Finish setup
+      
 
       _completeSetup();
      
@@ -1724,7 +1731,8 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
   }
 
   void _completeSetup() {
-    // Save settings and navigate to main app
+    
+    NotificationPermissionDialog.show(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Learning reminders set up successfully!'),
@@ -1737,9 +1745,7 @@ class _QuickReminderSetupScreenState extends State<QuickReminderSetupScreen> {
 
      widget.onContinue();
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => TechLearningPage()),
-    );
+    Navigator.pushNamed(context, widget.isSoftware? '/learn': '/learn2');
   }
 
   bool _listsEqual(List<String> list1, List<String> list2) {

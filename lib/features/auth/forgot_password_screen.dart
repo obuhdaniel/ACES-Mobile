@@ -109,24 +109,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   const SizedBox(height: 40),
 
                   // Title
-                   Text(
+                  Text(
                     'Forgot Password',
-                    style:  GoogleFonts.nunito(
-                      fontSize: 28,
+                    style: GoogleFonts.poppins(
+                      fontSize: 2,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: AppTheme.textColor,
                     ),
                   ),
 
                   const SizedBox(height: 12),
 
                   // Description
-                   Text(
+                  Text(
                     'Please Enter your Email to reset the password',
-                    style:  GoogleFonts.nunito(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Color(0xFF696984),
+                        fontWeight: FontWeight.w400),
                   ),
 
                   const SizedBox(height: 32),
@@ -139,12 +139,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           Text(
+                          Text(
                             'Email',
-                            style:  GoogleFonts.nunito(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black87,
+                              color: AppTheme.textColor,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -159,14 +159,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
-                              style: GoogleFonts.nunito(
-                      color: AppTheme.primaryTeal
-                    ),
+                            style: GoogleFonts.poppins(
+                                color: AppTheme.primaryTeal),
                             decoration: InputDecoration(
                               hintText: 'Email Address',
-                              hintStyle: GoogleFonts.nunito(
-                      color: AppTheme.primaryTeal.withOpacity(0.3)
-                    ),
+                              hintStyle:
+                                  GoogleFonts.poppins(color: Color(0xFF696984)),
                               prefixIcon: const Icon(
                                 Icons.email_outlined,
                                 color: AppTheme.primaryTeal,
@@ -223,7 +221,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                           : _resetPassword,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: (!_isValidEmail || _isLoading)
-                            ? AppTheme.primaryTeal.withOpacity(0.3)
+                            ? Color(0xFFC5DBE1)
                             : AppTheme.primaryTeal,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
@@ -232,9 +230,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          :  Text(
+                          : Text(
                               'Reset Password',
-                              style:  GoogleFonts.nunito(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -273,7 +271,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
             backgroundColor: Colors.green,
           ),
         );
-        
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -376,12 +374,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 const SizedBox(height: 40),
 
                 // Title
-                 Text(
+                Text(
                   'Check your Email',
-                  style:  GoogleFonts.nunito(
-                    fontSize: 28,
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: AppTheme.textColor,
                   ),
                 ),
 
@@ -389,18 +387,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
                 // Description
                 RichText(
-                  text:  TextSpan(
-                    style:  GoogleFonts.nunito(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                  text: TextSpan(
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Color(0xFF696984),
+                        fontWeight: FontWeight.w400),
                     children: [
                       TextSpan(text: 'We sent a code to '),
                       TextSpan(
-                        text: '', // Will be set dynamically
-                        style:  GoogleFonts.nunito(
+                        text: '${widget.email}.',
+                        style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: AppTheme.primaryTeal,
                         ),
                       ),
                       TextSpan(text: '\nEnter the code that we sent'),
@@ -412,60 +410,86 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
                 // OTP Input
                 // OTP Input
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: List.generate(6, (index) {
-    return Container(
-      width: 50, // reduced a little so 6 fit better on screen
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      child: TextFormField(
-        controller: _controllers[index],
-        focusNode: _focusNodes[index],
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        style:   GoogleFonts.nunito(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: AppTheme.primaryTeal
-        ),
-        decoration:  InputDecoration(
-          border: InputBorder.none,
-          counterText: '',
-          hintStyle: GoogleFonts.nunito(
-            color: AppTheme.primaryTeal.withOpacity(0.3)
-          )
-        ),
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        onChanged: (value) {
-          if (value.isNotEmpty && index < 5) {
-            // move to next
-            _focusNodes[index + 1].requestFocus();
-          } else if (value.isEmpty && index > 0) {
-            // move back
-            _focusNodes[index - 1].requestFocus();
-          }
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(6, (index) {
+                    return Container(
+                      width: 50,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          width: 2,
+                          color: _controllers[index].text.isNotEmpty
+                              ? AppTheme.primaryTeal // when filled
+                              : const Color(0xFFD2D2D2), // default
+                        ),
+                      ),
+                      child: TextFormField(
+                        controller: _controllers[index],
+                        focusNode: _focusNodes[index],
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textColor,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '',
+                          hintStyle: GoogleFonts.poppins(
+                            color: AppTheme.primaryTeal.withOpacity(0.3),
+                          ),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        onChanged: (value) async {
+                          // 👇 Handle pasting multiple digits
+                          if (value.length > 1) {
+                            final pastedText = value;
+                            for (int i = 0;
+                                i < pastedText.length && i < 6;
+                                i++) {
+                              _controllers[i].text = pastedText[i];
+                            }
+                            // move focus to the last filled box
+                            if (pastedText.length < 6) {
+                              _focusNodes[pastedText.length].requestFocus();
+                            } else {
+                              _focusNodes[5].unfocus();
+                              _verifyCode();
+                            }
+                            setState(() {
+                              _isValidOTP = _controllers.every(
+                                  (controller) => controller.text.isNotEmpty);
+                            });
+                            return;
+                          }
 
-          setState(() {
-            _isValidOTP =
-                _controllers.every((controller) => controller.text.isNotEmpty);
-          });
-            if (_controllers.every((controller) => controller.text.isNotEmpty)) {
-            _verifyCode();
-          }
-        },
-      ),
-    );
-  }),
-),
+                          // 👇 Normal typing behavior
+                          if (value.isNotEmpty && index < 5) {
+                            _focusNodes[index + 1].requestFocus();
+                          } else if (value.isEmpty && index > 0) {
+                            _focusNodes[index - 1].requestFocus();
+                          }
 
+                          setState(() {
+                            _isValidOTP = _controllers.every(
+                                (controller) => controller.text.isNotEmpty);
+                          });
+                          if (_controllers.every(
+                              (controller) => controller.text.isNotEmpty)) {
+                            _verifyCode();
+                          }
+                        },
+                      ),
+                    );
+                  }),
+                ),
                 const SizedBox(height: 40),
 
                 // Verify Code Button
@@ -480,14 +504,14 @@ Row(
                           : AppTheme.primaryTeal,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(32),
                       ),
                     ),
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        :  Text(
+                        : Text(
                             'Verify Code',
-                            style:  GoogleFonts.nunito(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -496,21 +520,37 @@ Row(
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
                 // Resend Email
                 Center(
-                  child: TextButton(
-                    onPressed: _resendEmail,
-                    child:  Text(
-                      "Haven't seen this email yet? Resend Email",
-                      style:  GoogleFonts.nunito(
-                        color: Color(0xFF2E7D8F),
-                        fontSize: 14,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Haven't seen this email yet? ",
+                        style: GoogleFonts.poppins(
+                          color: const Color(0xFF696984),
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: _resendEmail,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.transparent,
+                        ),
+                        child: Text(
+                          "Resend Email",
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              decoration: TextDecoration.underline,
+                              color: const Color(0xFF2F327D)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -547,7 +587,7 @@ Row(
           backgroundColor: Colors.green,
         ),
       );
-      
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -570,7 +610,7 @@ Row(
   void _resendEmail() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final result = await authProvider.forgotPassword(widget.email);
-    
+
     if (result['success'] && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -667,77 +707,70 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   const SizedBox(height: 40),
 
                   // Title
-                   Text(
+                  Text(
                     'Password Reset',
-                    style:  GoogleFonts.nunito(
-                      fontSize: 28,
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: AppTheme.textColor,
                     ),
                   ),
 
                   const SizedBox(height: 12),
 
                   // Description
-                   Text(
+                  Text(
                     'Create a new Password. Ensure it is one you can remember this time for sure.',
-                    style:  GoogleFonts.nunito(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
-                      color: Colors.grey,
+                      color: Color(0xFF696984),
                     ),
                   ),
 
                   const SizedBox(height: 32),
 
                   // Password field
-                   Text(
+                  Text(
                     'Password',
-                    style:  GoogleFonts.nunito(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                      color: AppTheme.textColor,
                     ),
                   ),
                   const SizedBox(height: 8),
 
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    style: GoogleFonts.nunito(
-                      color: AppTheme.primaryTeal
-                    ),
+                    style: GoogleFonts.poppins(color: AppTheme.primaryTeal),
                     decoration: InputDecoration(
-                      hintText: 'Enter new password',
-                      hintStyle:   GoogleFonts.nunito(color: AppTheme.primaryTeal.withOpacity(0.3)),
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
+                      hintText: 'New Password',
+                      hintStyle: GoogleFonts.poppins(color: Color(0xFF696984)),
+                      prefixIcon: const Icon(
+                        Icons.password,
+                        color: AppTheme.primaryTeal,
                       ),
+                      filled: false,
+                      fillColor: Colors.grey.shade50,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal),
+                        borderSide: const BorderSide(
+                          color: AppTheme.primaryTeal,
+                          width: 2,
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -753,54 +786,47 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   const SizedBox(height: 20),
 
                   // Confirm Password field
-                   Text(
+                  Text(
                     'Confirm Password',
-                    style:  GoogleFonts.nunito(
+                      style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                      color: AppTheme.textColor,
                     ),
                   ),
                   const SizedBox(height: 8),
 
                   TextFormField(
                     controller: _confirmPasswordController,
-                    obscureText: _obscureConfirmPassword,
-                    style: GoogleFonts.nunito(
-                      color: AppTheme.primaryTeal
-                    ),
+                    style: GoogleFonts.poppins(color: AppTheme.primaryTeal),
                     decoration: InputDecoration(
-                      hintText: 'Confirm new password',
-                      hintStyle:   GoogleFonts.nunito(color: AppTheme.primaryTeal.withOpacity(0.3)),
-                      filled: true,
-                      fillColor: Colors.grey.shade50,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
+                      hintText: 'Confirm New Password',
+                      hintStyle: GoogleFonts.poppins(color: Color(0xFF696984)),
+                      prefixIcon: const Icon(
+                        Icons.password,
+                        color: AppTheme.primaryTeal,
                       ),
+                      filled: false,
+                      fillColor: Colors.grey.shade50,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppTheme.primaryTeal, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppTheme.primaryTeal,
+                          width: 2,
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -829,9 +855,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          :  Text(
+                          : Text(
                               'Update Password',
-                              style:  GoogleFonts.nunito(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -858,10 +884,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final result = await authProvider.resetPassword(
-        widget.email, 
-        widget.code, 
-        _passwordController.text
-      );
+          widget.email, widget.code, _passwordController.text);
 
       setState(() {
         _isLoading = false;
@@ -885,18 +908,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   size: 60,
                 ),
                 const SizedBox(height: 16),
-                 Text(
+                Text(
                   'Password Reset Successfully!',
-                  style:  GoogleFonts.nunito(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                 Text(
+                Text(
                   'You can now login with your new password',
-                  style:  GoogleFonts.nunito(
+                  style: GoogleFonts.poppins(
                     color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
@@ -921,9 +944,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child:  Text(
+                    child: Text(
                       'Back to Login',
-                      style:  GoogleFonts.nunito(color: Colors.white),
+                      style: GoogleFonts.poppins(color: Colors.white),
                     ),
                   ),
                 ),

@@ -32,6 +32,7 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
   
   int _currentIndex = 0;
   bool _isAutoSliding = true;
+  bool _isUserInteracting = false;
 
   final List<CarouselItem> _items = [
     CarouselItem(
@@ -48,7 +49,7 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
     CarouselItem(
       title: 'Take a Test',
       description: 'Assess your mental health with personalized tests',
-      imagePath: 'assets/images/test-2.png', // Add your mental health image
+      imagePath: 'assets/images/test-2.png',
       gradientColors: [
         AppTheme.accentPurple.withOpacity(0.05),
         AppTheme.accentPurple.withOpacity(0.02),
@@ -76,33 +77,40 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
 
   void _startAutoSlide() {
     _autoSlideTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (_isAutoSliding && mounted) {
+      if (_isAutoSliding && mounted && !_isUserInteracting) {
         _nextPage();
       }
     });
   }
 
   void _nextPage() {
-    if (_currentIndex < _items.length - 1) {
-      _currentIndex++;
-    } else {
-      _currentIndex = 0;
+    if (!mounted) return;
+    
+    int nextPage = _currentIndex + 1;
+    if (nextPage >= _items.length) {
+      nextPage = 0;
     }
     
     _pageController.animateToPage(
-      _currentIndex,
+      nextPage,
       duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOutCubic,
     );
   }
 
-  void _pauseAutoSlide() {
+  void _handleUserInteraction() {
+    if (_isUserInteracting) return;
+    
     setState(() {
+      _isUserInteracting = true;
       _isAutoSliding = false;
     });
+    
+    // Resume auto sliding after 5 seconds of no interaction
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
         setState(() {
+          _isUserInteracting = false;
           _isAutoSliding = true;
         });
       }
@@ -182,11 +190,10 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      _pauseAutoSlide();
+                      _handleUserInteraction();
                       if (_currentIndex == 0) {
                         widget.onQuizTap?.call();
                       } else {
-                        // Navigate to quiz page
                         _pageController.animateToPage(
                           0,
                           duration: const Duration(milliseconds: 400),
@@ -203,11 +210,10 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      _pauseAutoSlide();
+                      _handleUserInteraction();
                       if (_currentIndex == 1) {
                         widget.onMentalHealthTestTap?.call();
                       } else {
-                        // Navigate to mental health test page
                         _pageController.animateToPage(
                           1,
                           duration: const Duration(milliseconds: 400),
@@ -232,7 +238,7 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
   Widget _buildCarouselItem(CarouselItem item, int index) {
     return GestureDetector(
       onTap: () {
-        _pauseAutoSlide();
+        _handleUserInteraction();
         if (index == 0) {
           widget.onQuizTap?.call();
         } else {
@@ -264,7 +270,12 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
                     // Icon and title row
                     Row(
                       children: [
-                       
+                        Icon(
+                          item.icon,
+                          color: item.accentColor,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             item.title,
@@ -286,15 +297,11 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
                         fontSize: 14,
                         color: AppTheme.textColor.withOpacity(0.7),
                         height: 1.4,
-                        
-                        
                       ),
-                       overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 2, 
                     ),
-                    const SizedBox(height: 16),
-                    
-                    ],
+                  ],
                 ),
               ),
               
@@ -331,7 +338,6 @@ class _AutoCarouselWidgetState extends State<AutoCarouselWidget>
                             item.imagePath,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              // Fallback when image is not found
                               return Container(
                                 decoration: BoxDecoration(
                                   color: item.accentColor.withOpacity(0.1),
@@ -376,4 +382,3 @@ class CarouselItem {
     required this.icon,
   });
 }
-

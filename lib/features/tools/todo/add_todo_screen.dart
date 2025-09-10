@@ -190,7 +190,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
             children: [
               Text(
                 "Create Task",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1A1A1A),
@@ -199,7 +199,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
               ),
               Text(
                 "Stay organized and productive",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: Colors.grey[600],
@@ -244,7 +244,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -259,13 +259,13 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
           ),
           child: TextField(
             controller: controller,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
             ),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: GoogleFonts.inter(
+              hintStyle:  GoogleFonts.poppins(
                 color: Colors.grey[500],
               ),
               prefixIcon: Container(
@@ -299,7 +299,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
       children: [
         Text(
           "Description",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -315,13 +315,13 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
           child: TextField(
             controller: descController,
             maxLines: 4,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
             ),
             decoration: InputDecoration(
               hintText: "Add more details about your task...",
-              hintStyle: GoogleFonts.inter(
+              hintStyle:  GoogleFonts.poppins(
                 color: Colors.grey[500],
               ),
               border: InputBorder.none,
@@ -340,7 +340,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
       children: [
         Text(
           "Date",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -376,7 +376,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
                     selectedDate != null
                         ? "${selectedDate!.day} ${_monthName(selectedDate!.month)}, ${selectedDate!.year}"
                         : "Select a date",
-                    style: GoogleFonts.inter(
+                    style:  GoogleFonts.poppins(
                       fontSize: 16,
                       color: selectedDate != null
                           ? const Color(0xFF1A1A1A)
@@ -406,7 +406,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -439,7 +439,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
                 const SizedBox(height: 8),
                 Text(
                   time?.format(context) ?? "--:--",
-                  style: GoogleFonts.inter(
+                  style:  GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: time != null
@@ -474,7 +474,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
                 child: Center(
                   child: Text(
                     "Cancel",
-                    style: GoogleFonts.inter(
+                    style:  GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.grey[700],
@@ -531,7 +531,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
                             const SizedBox(width: 8),
                             Text(
                               "Create Task",
-                              style: GoogleFonts.inter(
+                              style:  GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -665,7 +665,7 @@ class _AddTodoPageState extends State<AddTodoPage> with TickerProviderStateMixin
       SnackBar(
         content: Text(
           message,
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             color: Colors.white,
           ),

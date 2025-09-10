@@ -114,9 +114,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 onPressed: () => Navigator.pop(context),
               ),
             ),
-            title:  Text(
+            title: Text(
               'Time Table',
-              style:  GoogleFonts.poppins(
+              style: GoogleFonts.poppins(
                 color: AppTheme.primaryTeal,
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
@@ -178,7 +178,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                           child: Text(
                             day,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.nunitoSans(
+                            style: GoogleFonts.poppins(
                               color: isSelected
                                   ? Colors.white
                                   : AppTheme.textColor,
@@ -196,6 +196,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               // Dropdowns
               Container(
                 color: Colors.white,
+                margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: Row(
                   children: [
@@ -212,7 +213,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                             isExpanded: true,
                             icon: const Icon(Icons.keyboard_arrow_down,
                                 color: Color(0xFF2E8B7B)),
-                            style:   GoogleFonts.poppins(
+                            style: GoogleFonts.poppins(
                               color: AppTheme.primaryTeal,
                               fontSize: 14,
                             ),
@@ -233,38 +234,34 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                         ),
                       ),
                     ),
-                    // const SizedBox(width: 16),
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 12),
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(color: Color(0xFF8F9BB3)),
-                    //     borderRadius: BorderRadius.circular(20),
-                    //   ),
-                    //   child: DropdownButtonHideUnderline(
-                    //     child: DropdownButton<String>(
-                    //       value: selectedLevel,
-                    //       icon: const Icon(Icons.keyboard_arrow_down,
-                    //           color: Color(0xFF2E8B7B)),
-                    //       style:   GoogleFonts.poppins(
-                    //         color: Color(0xFF2E8B7B),
-                    //         fontSize: 14,
-                    //       ),
-                    //       items: levels.map((String level) {
-                    //         return DropdownMenuItem<String>(
-                    //           value: level,
-                    //           child: Text(level),
-                    //         );
-                    //       }).toList(),
-                    //       onChanged: (String? newValue) {
-                    //         setState(() {
-                    //           selectedLevel = newValue!;
-                    //         });
-                    //          _loadTimeTableWithParameters(
-                    //               selectedLevel, newValue!);
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                    const SizedBox(width: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: const Color(0xFF8F9BB3)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            selectedLevel, // just display the chosen level
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xFF2E8B7B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Icon(
+                            Icons
+                                .lock, // optional: show a lock to indicate it's fixed
+                            color: Color(0xFF2E8B7B),
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -281,7 +278,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                       Expanded(
                         child: Text(
                           timetableProvider.error!,
-                          style:   GoogleFonts.poppins(color: Colors.red),
+                          style: GoogleFonts.poppins(color: Colors.red),
                         ),
                       ),
                       TextButton(
@@ -306,7 +303,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                         const SizedBox(height: 16),
                         Text(
                           'No classes on $selectedDay',
-                          style:  GoogleFonts.poppins(
+                          style: GoogleFonts.poppins(
                             color: Colors.grey[600],
                             fontSize: 16,
                           ),
@@ -314,7 +311,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'Select another day or check your filters',
-                          style:  GoogleFonts.poppins(
+                          style: GoogleFonts.poppins(
                             color: Colors.grey[500],
                             fontSize: 14,
                           ),
@@ -420,7 +417,6 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        
       ),
       child: IntrinsicHeight(
         child: Row(
@@ -432,8 +428,10 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    time.split(' ')[0].padLeft(5, '0'), // Ensure time is in 08:00 format
-                    style:  GoogleFonts.poppins(
+                    time
+                        .split(' ')[0]
+                        .padLeft(5, '0'), // Ensure time is in 08:00 format
+                    style: GoogleFonts.poppins(
                       color: const Color(0xFF212525),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -441,7 +439,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                   ),
                   Text(
                     endTime,
-                    style:  GoogleFonts.poppins(
+                    style: GoogleFonts.poppins(
                       color: const Color(0xFFBCC1CD),
                       fontSize: 12,
                     ),
@@ -450,14 +448,14 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               ),
             ),
             const SizedBox(width: 16),
-      
+
             // Vertical divider
             Container(
               width: 2,
               color: Color(0xFFE8F0F3),
             ),
             const SizedBox(width: 16),
-      
+
             // Course details container
             Expanded(
               child: Column(
@@ -476,7 +474,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                         children: [
                           Text(
                             course,
-                            style:  GoogleFonts.poppins(
+                            style: GoogleFonts.poppins(
                               color: isHighlighted
                                   ? Colors.white
                                   : const Color(0xFF2F327D),
@@ -487,7 +485,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                           const SizedBox(height: 4),
                           Text(
                             title,
-                            style:  GoogleFonts.poppins(
+                            style: GoogleFonts.poppins(
                               color: isHighlighted
                                   ? Colors.white
                                   : const Color(0xFF2F327D),
@@ -497,7 +495,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 8),
-                        
+
                           // Lecturers
                           ...lecturers
                               .map((lecturer) => Padding(
@@ -536,7 +534,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 14,)
+                  const SizedBox(
+                    height: 14,
+                  )
                 ],
               ),
             ),

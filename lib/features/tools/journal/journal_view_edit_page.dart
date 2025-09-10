@@ -139,7 +139,7 @@ class _JournalViewPageState extends State<JournalViewPage>
                 ),
                 child: Text(
                   widget.journal.category,
-                  style: GoogleFonts.inter(
+                  style:  GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: widget.journal.color,
@@ -149,7 +149,7 @@ class _JournalViewPageState extends State<JournalViewPage>
               const SizedBox(height: 4),
               Text(
                 _formatDateTime(widget.journal.date, widget.journal.time),
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey[600],
@@ -233,7 +233,7 @@ class _JournalViewPageState extends State<JournalViewPage>
             // Title
             Text(
               widget.journal.title,
-              style: GoogleFonts.inter(
+              style:  GoogleFonts.poppins(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF1A1A1A),
@@ -245,7 +245,7 @@ class _JournalViewPageState extends State<JournalViewPage>
             // Content
             Text(
               widget.journal.content,
-              style: GoogleFonts.inter(
+              style:  GoogleFonts.poppins(
                 fontSize: 16,
                 color: const Color(0xFF374151),
                 height: 1.6,
@@ -344,18 +344,18 @@ class _JournalViewPageState extends State<JournalViewPage>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Delete Journal',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+          style:  GoogleFonts.poppins(fontWeight: FontWeight.w600),
         ),
         content: Text(
           'Are you sure you want to delete "${widget.journal.title}"? This action cannot be undone.',
-          style: GoogleFonts.inter(),
+          style:  GoogleFonts.poppins(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: GoogleFonts.inter(color: Colors.grey[600]),
+              style:  GoogleFonts.poppins(color: Colors.grey[600]),
             ),
           ),
           ElevatedButton(
@@ -369,7 +369,7 @@ class _JournalViewPageState extends State<JournalViewPage>
                   SnackBar(
                     content: Text(
                       '"${widget.journal.title}" deleted successfully',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                      style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     backgroundColor: Colors.red,
                     behavior: SnackBarBehavior.floating,
@@ -386,7 +386,7 @@ class _JournalViewPageState extends State<JournalViewPage>
                             SnackBar(
                               content: Text(
                                 'Error undoing delete: $e',
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                                style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                               ),
                               backgroundColor: Colors.red,
                             ),
@@ -401,7 +401,7 @@ class _JournalViewPageState extends State<JournalViewPage>
                   SnackBar(
                     content: Text(
                       'Error deleting journal: $e',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                      style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     backgroundColor: Colors.red,
                   ),
@@ -413,7 +413,7 @@ class _JournalViewPageState extends State<JournalViewPage>
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            child: Text('Delete', style: GoogleFonts.inter()),
+            child: Text('Delete', style:  GoogleFonts.poppins()),
           ),
         ],
       ),
@@ -567,7 +567,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
             children: [
               Text(
                 widget.journalToEdit != null ? "Edit Journal" : "New Journal",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1A1A1A),
@@ -578,7 +578,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
                 widget.journalToEdit != null 
                     ? "Update your thoughts" 
                     : "Capture your thoughts",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey[600],
@@ -642,7 +642,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
       children: [
         Text(
           "Journal Title",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -657,13 +657,13 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
           ),
           child: TextField(
             controller: titleController,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
             ),
             decoration: InputDecoration(
               hintText: "Give your journal a title...",
-              hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
+              hintStyle:  GoogleFonts.poppins(color: Colors.grey[500]),
               prefixIcon: Container(
                 margin: const EdgeInsets.all(12),
                 padding: const EdgeInsets.all(8),
@@ -691,7 +691,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
       children: [
         Text(
           "Category",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -735,7 +735,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
                     const SizedBox(width: 8),
                     Text(
                       category.name,
-                      style: GoogleFonts.inter(
+                      style:  GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: isSelected ? category.color : Colors.grey[600],
@@ -757,7 +757,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
       children: [
         Text(
           "Content",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -773,14 +773,14 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
           child: TextField(
             controller: contentController,
             maxLines: 8,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
               height: 1.5,
             ),
             decoration: InputDecoration(
               hintText: "Start writing your journal entry...\n\nWhat's on your mind today?",
-              hintStyle: GoogleFonts.inter(
+              hintStyle:  GoogleFonts.poppins(
                 color: Colors.grey[500],
                 height: 1.5,
               ),
@@ -834,7 +834,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
         SnackBar(
           content: Text(
             'Please fill in both title and content',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
@@ -874,7 +874,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
             widget.journalToEdit != null 
                 ? 'Journal updated successfully' 
                 : 'Journal created successfully',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: selectedColor,
           behavior: SnackBarBehavior.floating,
@@ -887,7 +887,7 @@ class _CreateEditJournalPageState extends State<CreateEditJournalPage>
         SnackBar(
           content: Text(
             'Error saving journal: $e',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,

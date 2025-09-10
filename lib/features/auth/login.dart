@@ -1,10 +1,10 @@
 
+import 'package:aces_uniben/config/app_theme.dart';
 import 'package:aces_uniben/features/auth/forgot_password_screen.dart';
 import 'package:aces_uniben/features/auth/providers/auth_provider.dart';
-import 'package:aces_uniben/features/home/home_screen.dart';
 import 'package:aces_uniben/features/navbar.dart';
-import 'package:aces_uniben/features/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -112,8 +112,8 @@ class _SignInScreenState extends State<SignInScreen>
                       children: [
                         Image.asset(
                           'assets/images/welcome.png',
-                          fit: BoxFit.cover,
-                          height: 120,
+                          fit: BoxFit.fill,
+                          height: 160,
                         )
                       ],
                     ),
@@ -132,19 +132,19 @@ class _SignInScreenState extends State<SignInScreen>
                       children: [
                         Text(
                           'Welcome Back,',
-                          style: theme.textTheme.headlineSmall?.copyWith(
+                          style: GoogleFonts.poppins(
                             fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onBackground,
+                            color: AppTheme.textColor,
                             fontSize: 24,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'We are happy to see you once more. Enter your Email and Password',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color:
-                                theme.colorScheme.primary,
+                          style: GoogleFonts.poppins(
+                            color: const Color(0xFF696984),
                             fontSize: 16,
+                            fontWeight: FontWeight.w400,
                             height: 1.5,
                           ),
                         ),
@@ -165,9 +165,9 @@ class _SignInScreenState extends State<SignInScreen>
                       children: [
                         Text(
                           'Email',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.onBackground,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.textColor,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -175,13 +175,23 @@ class _SignInScreenState extends State<SignInScreen>
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
+                          style: GoogleFonts.poppins(
+                              color: AppTheme.textColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                            ),
                           decoration: InputDecoration(
                             hintText: 'Email Address',
-                            prefixIcon: Icon(
-                              Icons.email_outlined,
-                              color: theme.colorScheme.primary,
+                            hintStyle: GoogleFonts.poppins(
+                              color: Color(0xFF696984),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400
                             ),
-                            filled: true,
+                            prefixIcon: const Icon(
+                              Icons.email_outlined,
+                              color: AppTheme.primaryTeal,
+                            ),
+                            filled: false,
                             fillColor: isDarkMode
                                 ? theme.colorScheme.surface
                                 : Colors.grey.shade50,
@@ -189,7 +199,7 @@ class _SignInScreenState extends State<SignInScreen>
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color:
-                                    theme.colorScheme.outline.withOpacity(0.3),
+                                    Color(0xFFD2D2D2),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -233,11 +243,11 @@ class _SignInScreenState extends State<SignInScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                         Text(
                           'Password',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.onBackground,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.textColor,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -245,12 +255,22 @@ class _SignInScreenState extends State<SignInScreen>
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
                           textInputAction: TextInputAction.done,
+                           style: GoogleFonts.poppins(
+                              color: AppTheme.textColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                            ),
                           onFieldSubmitted: (_) => _handleSignIn(),
                           decoration: InputDecoration(
                             hintText: 'Password',
-                            prefixIcon: Icon(
+                            hintStyle: GoogleFonts.poppins(
+                              color: Color(0xFF696984),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400
+                            ),
+                            prefixIcon: const Icon(
                               Icons.lock_outline,
-                              color: theme.colorScheme.primary,
+                              color: AppTheme.primaryTeal,
                             ),
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -258,6 +278,7 @@ class _SignInScreenState extends State<SignInScreen>
                                   _isPasswordVisible = !_isPasswordVisible;
                                 });
                               },
+                              
                               icon: Icon(
                                 _isPasswordVisible
                                     ? Icons.visibility_off_outlined
@@ -266,15 +287,13 @@ class _SignInScreenState extends State<SignInScreen>
                                     .withOpacity(0.6),
                               ),
                             ),
-                            filled: true,
-                            fillColor: isDarkMode
-                                ? theme.colorScheme.surface
-                                : Colors.grey.shade50,
+                            filled: false,
+                            fillColor:Colors.grey.shade50,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color:
-                                    theme.colorScheme.outline.withOpacity(0.3),
+                                  Color(0xFFD2D2D2),
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -328,8 +347,8 @@ class _SignInScreenState extends State<SignInScreen>
                           },
                           child: Text(
                             'Forgot Password?',
-                            style: TextStyle(
-                              color: theme.colorScheme.primary,
+                            style:  GoogleFonts.poppins(
+                              color: AppTheme.textColor,
                               fontWeight: FontWeight.w500,
                               decoration: TextDecoration.underline,
                             ),
@@ -356,7 +375,7 @@ class _SignInScreenState extends State<SignInScreen>
                           backgroundColor: theme.colorScheme.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(32),
                           ),
                           elevation: 2,
                         ),
@@ -369,9 +388,9 @@ class _SignInScreenState extends State<SignInScreen>
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
+                            :  Text(
                                 'Sign in',
-                                style: TextStyle(
+                                style:  GoogleFonts.poppins(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),

@@ -3,6 +3,7 @@ import 'package:aces_uniben/features/auth/models/student_model.dart';
 import 'package:aces_uniben/features/auth/providers/auth_service.dart';
 import 'package:aces_uniben/services/db_helper.dart';
 import 'package:aces_uniben/services/secure_storage.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -11,6 +12,9 @@ class AuthProvider with ChangeNotifier {
 
   AcesStudent? get user => _user;
   bool get isAuthenticated => _user != null;
+  String? _error;
+
+  
 
   final AuthService _authService = AuthService();
   var logger = Logger();
@@ -22,6 +26,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
+
     try {
       final response = await _authService.login(email, password);
 
@@ -100,29 +105,42 @@ class AuthProvider with ChangeNotifier {
   }
 
   // Password recovery methods
-  Future<Map<String, dynamic>> forgotPassword(String email) async {
-    try {
-      final response = await _authService.forgotPassword(email);
-      
-      if (response.statusCode == 200 || response.statusCode ==201) {
-        return {
-          'success': true,
-          'message': 'Password reset instructions sent to your email'
-        };
-      } else {
-        return {
-          'success': false,
-          'message': response.data?['message'] ?? 'Failed to send reset instructions'
-        };
-      }
-    } catch (e) {
-      logger.e("Forgot password error: $e");
+Future<Map<String, dynamic>> forgotPassword(String email) async {
+  try {
+    final response = await _authService.forgotPassword(email);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      _error = null;
       return {
-        'success': false,
-        'message': 'An error occurred. Please try again.'
+        'success': true,
+        'message': 'Password reset instructions sent to your email',
       };
     }
+
+    return {
+      'success': false,
+      'message': response.data?['message'] ?? 'Failed to send reset instructions',
+    };
+  } on DioException catch (e) {
+    if (e.response?.statusCode == 404) {
+      return {
+        'success': false,
+        'message': 'Email not found. Please meet an ACES Admin to create your account.',
+      };
+    }
+
+    return {
+      'success': false,
+      'message': e.response?.data?['message'] ?? 'Failed to send reset instructions',
+    };
+  } catch (e) {
+    logger.e("Forgot password error: $e");
+    return {
+      'success': false,
+      'message': 'Something went wrong. Please try again later.',
+    };
   }
+}
 
   Future<Map<String, dynamic>> verifyCode(String email, String code) async {
     try {

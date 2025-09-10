@@ -147,7 +147,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
             children: [
               Text(
                 "New Journal",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1A1A1A),
@@ -156,7 +156,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
               ),
               Text(
                 "Capture your thoughts",
-                style: GoogleFonts.inter(
+                style:  GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey[600],
@@ -220,7 +220,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
       children: [
         Text(
           "Journal Title",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -235,13 +235,13 @@ class _CreateJournalPageState extends State<CreateJournalPage>
           ),
           child: TextField(
             controller: titleController,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
             ),
             decoration: InputDecoration(
               hintText: "Give your journal a title...",
-              hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
+              hintStyle:  GoogleFonts.poppins(color: Colors.grey[500]),
               prefixIcon: Container(
                 margin: const EdgeInsets.all(12),
                 padding: const EdgeInsets.all(8),
@@ -269,7 +269,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
       children: [
         Text(
           "Category",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -313,7 +313,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
                     const SizedBox(width: 8),
                     Text(
                       category.name,
-                      style: GoogleFonts.inter(
+                      style:  GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: isSelected ? category.color : Colors.grey[600],
@@ -335,7 +335,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
       children: [
         Text(
           "Content",
-          style: GoogleFonts.inter(
+          style:  GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1A1A1A),
@@ -351,14 +351,14 @@ class _CreateJournalPageState extends State<CreateJournalPage>
           child: TextField(
             controller: contentController,
             maxLines: 8,
-            style: GoogleFonts.inter(
+            style:  GoogleFonts.poppins(
               fontSize: 16,
               color: const Color(0xFF1A1A1A),
               height: 1.5,
             ),
             decoration: InputDecoration(
               hintText: "Start writing your journal entry...\n\nWhat's on your mind today?",
-              hintStyle: GoogleFonts.inter(
+              hintStyle:  GoogleFonts.poppins(
                 color: Colors.grey[500],
                 height: 1.5,
               ),
@@ -412,7 +412,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
         SnackBar(
           content: Text(
             'Please fill in both title and content',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
@@ -446,7 +446,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
         SnackBar(
           content: Text(
             'Journal created successfully',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: selectedColor,
           behavior: SnackBarBehavior.floating,
@@ -459,7 +459,7 @@ class _CreateJournalPageState extends State<CreateJournalPage>
         SnackBar(
           content: Text(
             'Error creating journal: $e',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,

@@ -1,4 +1,3 @@
-
 import 'package:aces_uniben/features/home/home_screen.dart';
 import 'package:aces_uniben/features/learn/page.dart';
 import 'package:aces_uniben/features/profile/profile_screen.dart';
@@ -6,27 +5,44 @@ import 'package:aces_uniben/features/tools/tools_screen.dart';
 import 'package:aces_uniben/features/updates/updates_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  final int initialIndex;
+  final bool initialIsSoftware;
+
+  const MainNavigationScreen({
+    super.key,
+    this.initialIndex = 0,
+    this.initialIsSoftware = true,
+  });
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+  late bool _currentIsSoftware;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const TechLearningPage(),
-    const UpdatesPage(),
-    const ToolsPage(),
-    const ProfileScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+    _currentIsSoftware = widget.initialIsSoftware;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _screens = [
+      const HomeScreen(),
+      TechLearningPage(
+        isSoftware: _currentIsSoftware,
+      ),
+      const UpdatesPage(),
+      const ToolsPage(),
+      const ProfileScreen(),
+    ];
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -153,9 +169,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               child: Icon(
                 isSelected ? activeIcon : icon,
                 key: ValueKey(isSelected),
-                color: isSelected
-                    ? const Color(0xFF2E7D8F)
-                    : Colors.grey[600],
+                color: isSelected ? const Color(0xFF2E7D8F) : Colors.grey[600],
                 size: 22.sp,
               ),
             ),
@@ -163,12 +177,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             FittedBox(
               child: Text(
                 label,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 11.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                  color: isSelected
-                      ? const Color(0xFF2E7D8F)
-                      : Colors.grey[600],
+                  color:
+                      isSelected ? const Color(0xFF2E7D8F) : Colors.grey[600],
                 ),
               ),
             ),
@@ -189,6 +202,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 }
+
 // Placeholder Screens (replace with your actual screens)
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

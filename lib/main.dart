@@ -5,6 +5,7 @@ import 'package:aces_uniben/features/auth/providers/auth_provider.dart';
 import 'package:aces_uniben/features/home/explore/mhs_list.dart';
 import 'package:aces_uniben/features/home/explore/mhs_tools.dart';
 import 'package:aces_uniben/features/learn/page.dart';
+import 'package:aces_uniben/features/navbar.dart';
 import 'package:aces_uniben/features/notifications/notification_service.dart';
 import 'package:aces_uniben/features/onboarding/onboarding_screen.dart';
 import 'package:aces_uniben/features/onboarding/splash_screen.dart';
@@ -21,14 +22,24 @@ import 'package:aces_uniben/features/updates/widgets/mhs_articles_page.dart';
 import 'package:aces_uniben/providers/onboarding_provider.dart';
 import 'package:aces_uniben/providers/theme_provider.dart';
 import 'package:aces_uniben/services/api_services.dart';
+import 'package:aces_uniben/services/background_initializers.dart';
 import 'package:aces_uniben/services/naviagtor_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   ApiService.wakeUpServer();
+
+    BackgroundInitService().initializeInBackground();
 
 
   final notificationService = NotificationService();
@@ -101,13 +112,14 @@ class ACESApp extends StatelessWidget {
                   '/': (context) => const RootScreen(),
                   '/todo': (context) => const TodoDisplayPage(),
                   '/timetable': (context) =>  TimeTableScreen(),
-                  '/learn': (context) => const TechLearningPage(isSoftware: true,),
-                  '/learn2': (context) => const TechLearningPage(isSoftware: false,),
+                  '/learn': (context) => const MainNavigationScreen(initialIndex: 1,),
+                  '/learn2': (context) => const MainNavigationScreen(initialIndex: 1, initialIsSoftware: false,),
                   '/journal': (context) => const JournalListPage(),
                   '/mhs': (context)=>  MentalHealthToolsScreen(),
                   '/mood': (context)=> MoodTrackerPage(),
                   '/sleep': (context)=> SleepTrackerPage(),
                   '/mhs2': (context)=> MHSArticlesPage(provider: Provider.of<UpdatesProvider>(context))
+                  
                 },
               );
             },

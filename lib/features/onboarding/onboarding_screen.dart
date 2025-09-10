@@ -1,10 +1,12 @@
 // Improved Onboarding Screen
+import 'package:aces_uniben/config/app_theme.dart';
 import 'package:aces_uniben/features/auth/login.dart';
 import 'package:aces_uniben/features/home/home_screen.dart';
 import 'package:aces_uniben/features/onboarding/models/onboardiing_model.dart';
 import 'package:aces_uniben/providers/onboarding_provider.dart';
 import 'package:aces_uniben/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -138,9 +140,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            child: const Text(
+            child:  Text(
               'Skip',
-              style: TextStyle(
+              style:  GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -203,7 +205,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             child: Text(
               isLastPage ? 'Get Started' : 'Continue',
-              style: const TextStyle(
+              style:   GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -211,23 +213,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         
-        // Show skip button at bottom only on last page for better UX
-        if (isLastPage) ...[
-          const SizedBox(height: 16),
-          TextButton(
-            onPressed: () {
-              _navigateToMain();
-              onboardingProvider.completeOnboarding();
-            },
-            child: Text(
-              'Maybe Later',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ],
+       
       ],
     );
   }
@@ -256,109 +242,75 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    // Responsive sizing
-    final imageSize = isWideScreen 
-        ? 320.0 
-        : isSmallScreen 
-            ? 220.0 
-            : 280.0;
     
-    final horizontalPadding = isWideScreen ? 60.0 : 24.0;
-    final titleFontSize = isSmallScreen ? 22.0 : 26.0;
-    final descriptionFontSize = isSmallScreen ? 14.0 : 16.0;
+    
+
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: isSmallScreen ? 16 : 32,
+        horizontal: 12,
+        vertical: 16,
       ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * 0.6,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Image container with improved design
-            Container(
-              width: imageSize,
-              height: imageSize,
-              margin: EdgeInsets.only(bottom: isSmallScreen ? 24 : 40),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: theme.colorScheme.primary.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        theme.colorScheme.primary.withOpacity(0.05),
-                        theme.colorScheme.secondary.withOpacity(0.05),
-                      ],
-                    ),
-                  ),
-                  child: Image.asset(
-                    data.imagePath,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback to icon if image fails to load
-                      return Icon(
-                        data.icon,
-                        size: imageSize * 0.4,
-                        color: theme.colorScheme.primary.withOpacity(0.6),
-                      );
-                    },
-                  ),
-                ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Image container with improved design
+          Container(
+            width: double.infinity,
+            height: 400,
+            margin: EdgeInsets.only(bottom: isSmallScreen ? 24 : 40),
+
+            child: ClipRRect(
+              child: Image.asset(
+                data.imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  // Fallback to icon if image fails to load
+                  return Icon(
+                    data.icon,
+                    size: 320 * 0.4,
+                    color: theme.colorScheme.primary.withOpacity(0.6),
+                  );
+                },
               ),
             ),
-            
-            // Title with improved typography
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isWideScreen ? 40 : 0,
-              ),
-              child: Text(
-                data.title,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: titleFontSize,
-                  color: theme.colorScheme.onSurface,
-                  height: 1.2,
-                ),
+          ),
+          
+          // Title with improved typography
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isWideScreen ? 40 : 0,
+            ),
+            child: Text(
+              data.title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: AppTheme.textColor,
+                height: 1.2,
               ),
             ),
-            
-            SizedBox(height: isSmallScreen ? 16 : 24),
-            
-            // Description with better spacing
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isWideScreen ? 60 : 16,
-              ),
-              child: Text(
-                data.description,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontSize: descriptionFontSize,
-                  color: theme.colorScheme.onSurfaceVariant,
-                  height: 1.5,
-                ),
+          ),
+          
+          SizedBox(height: isSmallScreen ? 16 : 24),
+          
+          // Description with better spacing
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isWideScreen ? 60 : 16,
+            ),
+            child: Text(
+              data.description,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Color(0xFF696984),
+                height: 1.5,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -156,7 +156,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
       
       title: Text(
         'Updates',
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts. poppins(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           color: AppTheme.primaryTeal,
@@ -199,7 +199,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
         children: [
           Text(
             title,
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: AppTheme.primaryTeal,
@@ -209,7 +209,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
           Spacer(),
           TextButton(onPressed: onSeeAll, child: Text(
             'See All',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppTheme.textColor.withOpacity(0.6),
@@ -267,7 +267,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                   Text(
                     updatesProvider.error!,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.nunitoSans(color: Colors.grey),
+                    style: GoogleFonts. poppins(color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
@@ -303,7 +303,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                   const SizedBox(height: 8),
                   Text(
                     'No announcements available',
-                    style: GoogleFonts.nunitoSans(color: Colors.grey),
+                    style: GoogleFonts. poppins(color: Colors.grey),
                   ),
                 ],
               ),
@@ -411,7 +411,7 @@ Widget _buildMainAnnouncementCard(AnnouncementItem announcement, UpdatesProvider
                   children: [
                     Text(
                       announcement.title,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts. poppins(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.textColor,
@@ -420,7 +420,7 @@ Widget _buildMainAnnouncementCard(AnnouncementItem announcement, UpdatesProvider
                     const SizedBox(height: 8),
                     Text(
                       announcement.description,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts. poppins(
                         fontSize: 15,
                         color: AppTheme.textColor,
                         height: 1.4,
@@ -436,9 +436,9 @@ Widget _buildMainAnnouncementCard(AnnouncementItem announcement, UpdatesProvider
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text(
+                      child:  Text(
                         'View More',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Color(0xFF2E7D8F),
                           fontWeight: FontWeight.w600,
                         ),
@@ -512,7 +512,7 @@ Widget _buildSmallAnnouncementCard(AnnouncementItem announcement, UpdatesProvide
                   children: [
                     Text(
                       announcement.title,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts. poppins(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -523,7 +523,7 @@ Widget _buildSmallAnnouncementCard(AnnouncementItem announcement, UpdatesProvide
                     const SizedBox(height: 4),
                     Text(
                       announcement.description,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts. poppins(
                         fontSize: 14,
                         color: const Color(0xFF696984),
                       ),
@@ -640,7 +640,7 @@ Widget _buildLoadingShimmer() {
                 children: [
                   Text(
                     article.title,
-                    style: GoogleFonts.nunitoSans(
+                    style: GoogleFonts. poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppTheme.textColor,
@@ -653,7 +653,7 @@ Widget _buildLoadingShimmer() {
                       children: [
                         // Text(
                         //   'MHS Article',
-                        //   style: GoogleFonts.nunitoSans(
+                        //   style: GoogleFonts. poppins(
                         //     fontSize: 10,
                         //     color: AppTheme.textColor.withOpacity(0.8),
                         //   ),
@@ -667,7 +667,7 @@ Widget _buildLoadingShimmer() {
                         const SizedBox(width: 8),
                         Text(
                           formatRelativeTime(article.updatedAt),
-                          style: GoogleFonts.nunitoSans(
+                          style: GoogleFonts. poppins(
                             fontSize: 14,
                             color: const Color(0xFF8F9BB3),
                           ),
@@ -808,7 +808,7 @@ Widget _buildForumCard(ForumPost post) {
                   children: [
                     Text(
                       post.title,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts. poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -821,7 +821,7 @@ Widget _buildForumCard(ForumPost post) {
                       children: [
                         Text(
                           'Forum',
-                          style: GoogleFonts.nunitoSans(
+                          style: GoogleFonts. poppins(
                             fontSize: 14,
                             color: AppTheme.textColor.withOpacity(0.8),
                           ),
@@ -835,7 +835,7 @@ Widget _buildForumCard(ForumPost post) {
                         const SizedBox(width: 8),
                         Text(
                            formatRelativeTime(post.updatedAt),
-                          style: GoogleFonts.nunitoSans(
+                          style: GoogleFonts. poppins(
                             fontSize: 14,
                             color: const Color(0xFF8F9BB3),
                           ),

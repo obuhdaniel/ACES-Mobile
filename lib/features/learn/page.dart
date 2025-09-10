@@ -725,7 +725,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
                   Icons.keyboard_arrow_down,
                   color: Colors.teal,
                 ),
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts.poppins(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: Colors.teal,
@@ -780,59 +780,66 @@ class _TechLearningPageState extends State<TechLearningPage> {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment:
-            CrossAxisAlignment.center, // vertically center content
-        children: [
-          // Text section
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isHardwareCategory
-                      ? 'Learn Hardware with Ease'
-                      : 'Master programming with ease',
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: isHardwareCategory
-                        ? AppTheme.primaryTeal
-                        : AppTheme.lightGreen,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Choose and learn based on your tech Niche',
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 14,
-                    color: isHardwareCategory
-                        ? AppTheme.textColor
-                        : Colors.white.withOpacity(0.9),
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
+     child: LayoutBuilder(
+  builder: (context, constraints) {
+    final isSmallScreen = constraints.maxWidth < 400;
 
-          // Image section
-          Flexible(
-            child: SizedBox(
-              height: 140,
-              child: Image.asset(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Text section
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
                 isHardwareCategory
-                    ? 'assets/images/learn-hard.png'
-                    : 'assets/images/learn-soft.png',
-                fit: BoxFit.contain, // keeps aspect ratio
-                alignment: Alignment.center, // centers the image
+                    ? 'Learn Hardware with Ease'
+                    : 'Master Programming with Ease',
+                style: GoogleFonts.poppins(
+                  fontSize: isSmallScreen ? 20 : 24,
+                  fontWeight: FontWeight.bold,
+                  color: isHardwareCategory
+                      ? AppTheme.primaryTeal
+                      : AppTheme.lightGreen,
+                ),
               ),
+              const SizedBox(height: 8),
+              Text(
+                'Choose and learn based on your tech niche',
+                style: GoogleFonts.poppins(
+                  fontSize: isSmallScreen ? 14 : 18,
+                  color: isHardwareCategory
+                      ? AppTheme.textColor
+                      : Colors.white.withOpacity(0.9),
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+
+        // Image section
+        Flexible(
+          flex: 1,
+          child: SizedBox(
+            height: isSmallScreen ? 140 : 180,
+            child: Image.asset(
+              isHardwareCategory
+                  ? 'assets/images/learn-hard.png'
+                  : 'assets/images/learn-soft.png',
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+  },
+),
+ );
   }
 
   Widget _buildTechGrid() {
@@ -918,7 +925,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
                           ? Center(
                               child: Text(
                                 category.name,
-                                style: GoogleFonts.nunitoSans(
+                                style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -969,7 +976,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade400, Colors.blue.shade600],
+            colors: [AppTheme.primaryTeal, AppTheme.primaryTeal.withOpacity(0.6)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -999,7 +1006,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
                 Expanded(
                   child: Text(
                     'Roadmap',
-                    style: GoogleFonts.nunito(
+                    style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -1011,7 +1018,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
             const SizedBox(height: 12),
             Text(
               'Follow a step-by-step roadmap to guide your learning journey.',
-              style: GoogleFonts.nunito(
+              style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: Colors.white.withOpacity(0.9),
@@ -1045,7 +1052,7 @@ class _TechLearningPageState extends State<TechLearningPage> {
                   const SizedBox(width: 8),
                   Text(
                     'View Roadmap',
-                    style: GoogleFonts.nunito(
+                    style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),

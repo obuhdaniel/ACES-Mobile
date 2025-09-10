@@ -68,7 +68,7 @@ class ToolsPage extends StatelessWidget {
       centerTitle: true,
       title: Text(
         'Tools',
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts.poppins(
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: AppTheme.primaryTeal,
@@ -119,7 +119,7 @@ class ToolsPage extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: GoogleFonts.nunitoSans(
+                        style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.primaryTeal,
@@ -128,7 +128,7 @@ class ToolsPage extends StatelessWidget {
                       const SizedBox(height: 12),
                       Text(
                         description,
-                        style: GoogleFonts.nunitoSans(
+                        style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: const Color(0XFF696984),
                           height: 1.5,
@@ -210,16 +210,7 @@ class ToolsPage extends StatelessWidget {
   }
 
   void _handleToolTap(BuildContext context, String toolName) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Opening $toolName...'),
-        duration: const Duration(seconds: 1),
-        backgroundColor: Colors.teal.shade600,
-      ),
-    );
-    
-    // TODO: Navigate to respective tool pages
-    // Example:
+  
     if (toolName == 'Time Table') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => TimeTableScreen()));
     } else if (toolName == 'To Do List') {

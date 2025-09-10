@@ -152,7 +152,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                       children: [
                         Text(
                           "My Tasks",
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 22,
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF1A1A1A),
@@ -161,7 +161,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                         ),
                         Text(
                           "${_todos.where((t) => !t.isCompleted).length} pending",
-                          style: GoogleFonts.inter(
+                          style:  GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.grey[600],
@@ -259,7 +259,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                           children: [
                             Text(
                               _formatMonth(date),
-                              style: GoogleFonts.inter(
+                              style:  GoogleFonts.poppins(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 color: isSelected
@@ -281,7 +281,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                               child: Center(
                                 child: Text(
                                   date.day.toString(),
-                                  style: GoogleFonts.inter(
+                                  style:  GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     color: isSelected
@@ -294,7 +294,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                             const SizedBox(height: 6),
                             Text(
                               _formatWeekday(date),
-                              style: GoogleFonts.inter(
+                              style:  GoogleFonts.poppins(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 color: isSelected
@@ -367,7 +367,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                                   const SizedBox(height: 24),
                                   Text(
                                     "All done for today! 🎉",
-                                    style: GoogleFonts.inter(
+                                    style:  GoogleFonts.poppins(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xFF1A1A1A),
@@ -376,7 +376,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                                   const SizedBox(height: 8),
                                   Text(
                                     "No tasks scheduled for ${_formatDate(selectedDate)}",
-                                    style: GoogleFonts.inter(
+                                    style:  GoogleFonts.poppins(
                                       fontSize: 14,
                                       color: Colors.grey[600],
                                     ),
@@ -410,7 +410,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                                           const SizedBox(width: 8),
                                           Text(
                                             "Tap to add a new task",
-                                            style: GoogleFonts.inter(
+                                            style:  GoogleFonts.poppins(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                               color: primaryColor,
@@ -521,7 +521,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                         children: [
                           Text(
                             todo.title,
-                            style: GoogleFonts.inter(
+                            style:  GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: todo.isCompleted 
@@ -536,7 +536,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                             const SizedBox(height: 4),
                             Text(
                               todo.description!,
-                              style: GoogleFonts.inter(
+                              style:  GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: todo.isCompleted 
                                     ? Colors.grey[400] 
@@ -568,7 +568,7 @@ class _TodoDisplayPageState extends State<TodoDisplayPage> {
                                   const SizedBox(width: 4),
                                   Text(
                                     _formatTime(todo.endTime!),
-                                    style: GoogleFonts.inter(
+                                    style:  GoogleFonts.poppins(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       color: primaryColor,

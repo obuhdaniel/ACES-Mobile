@@ -11,6 +11,7 @@ import 'package:aces_uniben/features/tools/todo/view_todo_screen.dart';
 import 'package:aces_uniben/features/updates/models/updates_model.dart';
 import 'package:aces_uniben/features/updates/providers/updates_provider.dart';
 import 'package:aces_uniben/features/updates/updates_screen.dart';
+import 'package:aces_uniben/services/check_notifications_permissions.dart';
 import 'package:aces_uniben/services/webview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,6 +43,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           Provider.of<TimeTableProvider>(context, listen: false);
       final userLevel = authProvider.user?.level ?? '500L';
       final userSemester = 'Second';
+      NotificationPermissionDialog.show(context);
 
       timetableProvider.getEntriesForToday(userLevel, userSemester);
     });
@@ -50,11 +52,11 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
   String _getGreeting() {
     int hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good Morning';
+      return 'Morning';
     } else if (hour < 17) {
-      return 'Good Afternoon';
+      return 'Afternoon';
     } else {
-      return 'Good Evening';
+      return 'Evening';
     }
   }
 
@@ -148,7 +150,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
   Widget _buildHeader(BuildContext context, AuthProvider authProvider) {
     final userName = authProvider.user?.name ?? '';
     final firstName =
-        userName.split(' ').isNotEmpty ? userName.split(' ')[0] : '';
+        userName.split(' ').isNotEmpty ? userName.split(' ')[1] : '';
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -165,7 +167,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           Flexible(
             child: Text(
               '${_getGreeting()}, $firstName!',
-              style: GoogleFonts.nunitoSans(
+              style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textColor,
@@ -205,7 +207,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                   pendingTasks == 0
                       ? 'All tasks completed!\nGreat job!'
                       : 'You have $pendingTasks task${pendingTasks == 1 ? '' : 's'}\nleft to do today',
-                  style: GoogleFonts.nunitoSans(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: AppTheme.primaryTeal,
                     fontWeight: FontWeight.w500,
@@ -276,7 +278,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                 Center(
                   child: Text(
                     '${(taskProgress * 100).toInt()}%',
-                    style: GoogleFonts.nunitoSans(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primaryTeal,
@@ -303,7 +305,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           'Today Classes',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppTheme.textColor,
@@ -441,7 +443,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                               // Course code
                               Text(
                                 courseCode,
-                                style: GoogleFonts.nunitoSans(
+                                style: GoogleFonts.poppins(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w800,
                                   color: AppTheme.textColor,
@@ -561,7 +563,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           const SizedBox(height: 12),
           Text(
             'Error loading timetable',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.red,
@@ -570,7 +572,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           const SizedBox(height: 8),
           Text(
             timetableProvider.error ?? '',
-            style: GoogleFonts.nunitoSans(fontSize: 14, color: Colors.black54),
+            style: GoogleFonts.poppins(fontSize: 14, color: Colors.black54),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -618,7 +620,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           const SizedBox(height: 12),
           Text(
             'No classes today!',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.grey.shade700,
@@ -627,7 +629,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           const SizedBox(height: 6),
           Text(
             'Enjoy your free time 🎉',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontSize: 14,
               color: Colors.grey.shade500,
             ),
@@ -646,9 +648,9 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       alignment: Alignment.centerRight,
       child: ElevatedButton.icon(
         onPressed: () =>
-            timetableProvider.getEntriesForToday(userLevel, userSemester),
+            timetableProvider.fetchAndSyncTimeTable(),
         icon: const Icon(Icons.refresh, size: 18),
-        label: const Text('Refresh'),
+        label: const Text('Sync'),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppTheme.primaryTeal,
           foregroundColor: Colors.white,
@@ -683,7 +685,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
           const SizedBox(width: 6),
           Text(
             date,
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               color: AppTheme.primaryTeal,
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -713,7 +715,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
         Expanded(
           child: Text(
             text,
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontSize: 13,
               color: AppTheme.textColor.withOpacity(0.8),
               fontWeight: FontWeight.w500,
@@ -739,7 +741,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       ),
       label: Text(
         label,
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts.poppins(
           fontSize: 13,
           fontWeight: FontWeight.w600,
         ),
@@ -766,7 +768,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       children: [
         Text(
           'Mental Health',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppTheme.textColor,
@@ -803,7 +805,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       children: [
         Text(
           'Explore',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppTheme.textColor,
@@ -852,7 +854,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                     SizedBox(height: 12.h),
                     Text(
                       item['label'] as String,
-                      style: GoogleFonts.nunitoSans(
+                      style: GoogleFonts.poppins(
                         fontSize: 17.sp,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -876,7 +878,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
         children: [
           Text(
             title,
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: AppTheme.primaryTeal,
@@ -887,7 +889,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
             onPressed: onSeeAll,
             child: Text(
               'See All',
-              style: GoogleFonts.nunitoSans(
+              style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textColor.withOpacity(0.6),
@@ -900,143 +902,106 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
   }
 
   Widget _buildMainAnnouncementCard(
-      AnnouncementItem announcement, UpdatesProvider provider) {
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.2),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+      AnnouncementItem announcement, UpdatesProvider provider, VoidCallback onViewMore) {
+    return GestureDetector(
+      onTap: onViewMore,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.2),
+            width: 1.5,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-                child: announcement.imageUrl != null
-                    ? Image.network(
-                        announcement.imageUrl!,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          height: 200,
-                          width: double.infinity,
-                          color: Colors.orangeAccent.withOpacity(0.2),
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.image,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      )
-                    : Container(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: announcement.imageUrl != null
+                  ? Image.network(
+                      announcement.imageUrl!,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
                         height: 200,
                         width: double.infinity,
                         color: Colors.orangeAccent.withOpacity(0.2),
-                        child: _buildImagePlaceholder(),
-                      ),
-              ),
-              // Content
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      announcement.title,
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.textColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      announcement.description,
-                      style: GoogleFonts.nunitoSans(
-                        fontSize: 15,
-                        color: AppTheme.textColor,
-                        height: 1.4,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: const Text(
-                        'View More',
-                        style: TextStyle(
-                          color: Color(0xFF2E7D8F),
-                          fontWeight: FontWeight.w600,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.image,
+                          size: 40,
+                          color: Colors.grey,
                         ),
                       ),
+                    )
+                  : Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: Colors.orangeAccent.withOpacity(0.2),
+                      child: _buildImagePlaceholder(),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Bookmark button
-        Positioned(
-          top: 12,
-          right: 12,
-          child: FutureBuilder<bool>(
-            future: provider.isAnnouncementBookmarked(announcement.id),
-            builder: (context, snapshot) {
-              final isBookmarked = snapshot.data ?? false;
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+            ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    announcement.title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textColor,
                     ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                    color: isBookmarked ? const Color(0xFF2E7D8F) : Colors.grey,
                   ),
-                  onPressed: () {
-                    provider.toggleAnnouncementBookmark(announcement.id);
-                  },
-                  iconSize: 24,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              );
-            },
-          ),
+                  const SizedBox(height: 8),
+                  Text(
+                    announcement.description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: AppTheme.textColor,
+                      height: 1.4,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: onViewMore,
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: const Text(
+                      'View More',
+                      style: TextStyle(
+                        color: Color(0xFF2E7D8F),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -1087,7 +1052,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                     Text(
                       updatesProvider.error!,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.nunitoSans(color: Colors.grey),
+                      style: GoogleFonts.poppins(color: Colors.grey),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
@@ -1125,7 +1090,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'No announcements available',
-                      style: GoogleFonts.nunitoSans(color: Colors.grey),
+                      style: GoogleFonts.poppins(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -1145,7 +1110,9 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
             }),
             const SizedBox(height: 16),
             if (mainAnnouncement != null)
-              _buildMainAnnouncementCard(mainAnnouncement, updatesProvider),
+              _buildMainAnnouncementCard(mainAnnouncement, updatesProvider, () {
+             UpdatesNavigationHandler.navigateToPostDetail(context, mainAnnouncement, 'announcement');
+            }),
           ],
         );
       },

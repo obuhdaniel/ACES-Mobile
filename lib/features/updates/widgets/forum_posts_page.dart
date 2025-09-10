@@ -65,7 +65,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           'Forum Posts',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts. poppins(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF1A1D29),
@@ -236,7 +236,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
                   const SizedBox(width: 4),
                   Text(
                     'FORUM POST',
-                    style: GoogleFonts.nunitoSans(
+                    style: GoogleFonts. poppins(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -297,7 +297,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
               const SizedBox(width: 4),
               Text(
                 'FORUM POST',
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts. poppins(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.primaryTeal,
@@ -331,7 +331,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
           const SizedBox(width: 4),
           Text(
             formatRelativeTime(post.updatedAt),
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 11,
               fontWeight: FontWeight.w500,
               color: Colors.grey.shade600,
@@ -345,7 +345,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
   Widget _buildCardTitle(dynamic post) {
     return Text(
       post.title,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: const Color(0xFF1A1D29),
@@ -362,7 +362,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
     
     return Text(
       description,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 14,
         color: const Color(0xFF64748B),
         height: 1.5,
@@ -392,7 +392,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
             _searchQuery.isNotEmpty 
               ? 'No forum posts found'
               : 'No forum posts yet',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF1A1D29),
@@ -403,7 +403,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
             _searchQuery.isNotEmpty 
               ? 'Try adjusting your search or filters'
               : 'Be the first to start a discussion',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 14,
               color: Colors.grey.shade600,
             ),
@@ -420,7 +420,7 @@ class _ForumPostsPageState extends State<ForumPostsPage>
               icon: const Icon(Icons.clear),
               label: Text(
                 'Clear Filters',
-                style: GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
+                style: GoogleFonts. poppins(fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryTeal,

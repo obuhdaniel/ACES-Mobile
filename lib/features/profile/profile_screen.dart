@@ -7,6 +7,7 @@ import 'package:aces_uniben/features/profile/scheduler/learning_scheduler.dart'
     hide AppTheme;
 import 'package:aces_uniben/features/profile/widgets/first_aid_screen.dart';
 import 'package:aces_uniben/features/profile/widgets/help_screen.dart';
+import 'package:aces_uniben/services/check_notifications_permissions.dart';
 import 'package:aces_uniben/services/webview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       automaticallyImplyLeading: false,
       title: Text(
         'Profile',
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts.poppins(
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: AppTheme.primaryTeal,
@@ -101,8 +102,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Center(
               child: Text(
-                'D',
-                style: GoogleFonts.nunitoSans(
+                authProvider.user?.name[0] ?? 'U',
+                style: GoogleFonts.poppins(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.primaryTeal,
@@ -120,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   authProvider.user?.name ?? 'User',
-                  style: GoogleFonts.nunitoSans(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.black87,
@@ -129,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 4),
                 Text(
                   authProvider.user?.level ?? '100L',
-                  style: GoogleFonts.nunitoSans(
+                  style: GoogleFonts.poppins(
                     fontSize: 14,
                     color: Colors.grey.shade600,
                   ),
@@ -170,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           'Support & Resources',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: AppTheme.primaryTeal,
@@ -181,16 +182,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icons.help_outline,
           title: 'Resources',
           subtitle: 'Find help when you need it',
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> FirstAidScreen())),
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FirstAidScreen())),
         ),
         const SizedBox(height: 12),
-       _buildMenuItem(
-  icon: Icons.account_balance_outlined,
-  title: 'ACES Next-Wave Executives',
-  subtitle: 'Meet the visionaries supporting this app',
-  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> const WebviewWidget(url: 'https://acesuniben.org/aces', title: 'ACES Next-Wave Executives'))),
-),
-
+        _buildMenuItem(
+          icon: Icons.account_balance_outlined,
+          title: 'ACES Next-Wave Executives',
+          subtitle: 'Meet the visionaries supporting this app',
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const WebviewWidget(
+                      url: 'https://acesuniben.org/aces',
+                      title: 'ACES Next-Wave Executives'))),
+        ),
       ],
     );
   }
@@ -201,52 +207,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           'Notifications and Reminders',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: AppTheme.primaryTeal,
           ),
         ),
         const SizedBox(height: 16),
-       _buildMenuItem(
-  icon: Icons.notifications_active_outlined,
-  title: 'Enable Notifications',
-  subtitle: 'Stay updated with reminders and alerts',
-  onTap: () async {
-    bool granted = await NotificationService().requestPermissions();
-    if (granted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Notifications enabled successfully!')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-              'Notifications are disabled. You can enable them in Settings.'),
-          action: SnackBarAction(
-            label: 'Settings',
-            onPressed: () {
-              // TODO: open app notification settings
-            },
+        _buildMenuItem(
+          icon: Icons.notifications_active_outlined,
+          title: 'Enable Notifications',
+          subtitle: 'Stay updated with reminders and alerts',
+          onTap: () => NotificationPermissionDialog.show(context),),
+        const SizedBox(height: 12),
+        _buildMenuItem(
+          icon: Icons.schedule_outlined,
+          title: 'Learning Scheduler',
+          subtitle: 'Plan and manage your learninh time',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReminderSettingsScreen(),
+            ),
           ),
         ),
-      );
-    }
-  },
-),
-const SizedBox(height: 12),
-_buildMenuItem(
-  icon: Icons.schedule_outlined,
-  title: 'Learning Scheduler',
-  subtitle: 'Plan and manage your learninh time',
-  onTap: () => Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ReminderSettingsScreen(),
-    ),
-  ),
-),
-],
+      ],
     );
   }
 
@@ -256,7 +241,7 @@ _buildMenuItem(
       children: [
         Text(
           'Account',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.grey.shade700,
@@ -266,7 +251,8 @@ _buildMenuItem(
         _buildMenuItem(
           icon: Icons.help_outline,
           title: 'Help & FAQ',
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> HelpFAQPage())),
+          onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HelpFAQPage())),
         ),
       ],
     );
@@ -304,7 +290,7 @@ _buildMenuItem(
                   child: Icon(
                     icon,
                     size: 20,
-                    color: Color(0xFF6246EA),
+                    color: AppTheme.primaryTeal,
                   ),
                 ),
 
@@ -317,7 +303,7 @@ _buildMenuItem(
                     children: [
                       Text(
                         title,
-                        style: GoogleFonts.nunitoSans(
+                        style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: titleColor ?? AppTheme.textColor,
@@ -327,7 +313,7 @@ _buildMenuItem(
                         const SizedBox(height: 2),
                         Text(
                           subtitle,
-                          style: GoogleFonts.nunitoSans(
+                          style: GoogleFonts.poppins(
                             fontSize: 13,
                             color: Color(0xFF8F9BB3),
                           ),
@@ -371,7 +357,7 @@ _buildMenuItem(
           child: Center(
             child: Text(
               'Log Out',
-              style: GoogleFonts.nunitoSans(
+              style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.primaryTeal,
@@ -422,27 +408,26 @@ _buildMenuItem(
           ),
           title: Text(
             'Log Out',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
             ),
           ),
           content: Text(
             'Are you sure you want to log out?',
-            style: GoogleFonts.nunitoSans(),
+            style: GoogleFonts.poppins(),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancel',
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts.poppins(
                   color: Colors.grey.shade600,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () async{
-
+              onPressed: () async {
                 await authProvider.logout();
 
                 Navigator.of(context).pop();
@@ -453,7 +438,7 @@ _buildMenuItem(
               },
               child: Text(
                 'Log Out',
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts.poppins(
                   color: Colors.teal.shade600,
                   fontWeight: FontWeight.w600,
                 ),

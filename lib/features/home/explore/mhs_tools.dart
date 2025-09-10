@@ -431,7 +431,7 @@ class SleepTrackerPage extends StatelessWidget {
                 children: [
                   Text(
                     sleepQualities[index]['emoji'],
-                    style: const TextStyle(fontSize: 32),
+                    style:   GoogleFonts.poppins(fontSize: 32),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -838,7 +838,7 @@ class _SleepAnalysisWidgetState extends State<SleepAnalysisWidget> {
                         children: [
                           Text(
                             tracker.getSleepQualityEmoji(entry.sleepQuality),
-                            style: const TextStyle(fontSize: 24),
+                            style:   GoogleFonts.poppins(fontSize: 24),
                           ),
                           Text(
                             DateFormat('MMM d, y').format(entry.date),
@@ -1315,7 +1315,7 @@ class MoodTrackerPage extends StatelessWidget {
                 children: [
                   Text(
                     moods[index]['emoji'],
-                    style: const TextStyle(fontSize: 32),
+                    style:   GoogleFonts.poppins(fontSize: 32),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -1573,7 +1573,7 @@ class _MoodAnalysisWidgetState extends State<MoodAnalysisWidget> {
                     children: [
                       Text(
                         tracker.getMoodEmoji(averageMood.round()),
-                        style: const TextStyle(fontSize: 32),
+                        style:   GoogleFonts.poppins(fontSize: 32),
                       ),
                       const SizedBox(width: 12),
                       Text(
@@ -1660,7 +1660,7 @@ class _MoodAnalysisWidgetState extends State<MoodAnalysisWidget> {
                         children: [
                           Text(
                             tracker.getMoodEmoji(entry.moodLevel),
-                            style: const TextStyle(fontSize: 24),
+                            style:   GoogleFonts.poppins(fontSize: 24),
                           ),
                           const SizedBox(width: 12),
                           Text(
@@ -1876,7 +1876,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                       const SizedBox(width: 12),
                       Text(
                         'Sleep Overview',
-                        style: GoogleFonts.nunito(
+                        style: GoogleFonts. poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey.shade700,
@@ -1971,7 +1971,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                     child: emoji != null
                         ? Text(
                             emoji,
-                            style: const TextStyle(fontSize: 24),
+                            style:   GoogleFonts.poppins(fontSize: 24),
                           )
                         : Icon(
                             icon,
@@ -1985,7 +1985,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                 // Title
                 Text(
                   title,
-                  style: GoogleFonts.nunito(
+                  style: GoogleFonts. poppins(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey.shade600,
@@ -2001,7 +2001,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                   builder: (context, animatedValue, child) {
                     return Text(
                       animatedValue.toStringAsFixed(1),
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts. poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
                         color: color,
@@ -2033,7 +2033,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                 children: [
                   Text(
                     'Weekly Progress',
-                    style: GoogleFonts.nunito(
+                    style: GoogleFonts. poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
@@ -2047,7 +2047,7 @@ class _ModernizedSleepStatsState extends State<ModernizedSleepStats>
                     ),
                     child: Text(
                       _getQualityLabel(widget.averageQuality),
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts. poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: _getQualityColor(widget.averageQuality),

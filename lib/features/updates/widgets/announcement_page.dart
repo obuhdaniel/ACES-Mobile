@@ -65,7 +65,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage>
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           'Announcements',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts. poppins(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF1A1D29),
@@ -235,7 +235,7 @@ Widget _buildAnnouncementsList() {
                   const SizedBox(width: 4),
                   Text(
                     'ANNOUNCEMENT',
-                    style: GoogleFonts.nunitoSans(
+                    style: GoogleFonts. poppins(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -298,7 +298,7 @@ Widget _buildAnnouncementsList() {
               const SizedBox(width: 4),
               Text(
                 'ANNOUNCEMENT',
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts. poppins(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color:  AppTheme.primaryTeal,
@@ -335,7 +335,7 @@ Widget _buildAnnouncementsList() {
           const SizedBox(width: 4),
           Text(
             formatRelativeTime(announcement.updatedAt),
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 11,
               fontWeight: FontWeight.w500,
               color:  Colors.grey.shade600,
@@ -349,7 +349,7 @@ Widget _buildAnnouncementsList() {
   Widget _buildCardTitle(dynamic announcement) {
     return Text(
       announcement.title,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: const Color(0xFF1A1D29),
@@ -366,7 +366,7 @@ Widget _buildAnnouncementsList() {
     
     return Text(
       description,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 14,
         color: const Color(0xFF64748B),
         height: 1.5,
@@ -397,7 +397,7 @@ Widget _buildAnnouncementsList() {
             _searchQuery.isNotEmpty 
               ? 'No announcements found'
               : 'No announcements yet',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF1A1D29),
@@ -408,7 +408,7 @@ Widget _buildAnnouncementsList() {
             _searchQuery.isNotEmpty 
               ? 'Try adjusting your search or filters'
               : 'New announcements will appear here',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 14,
               color: Colors.grey.shade600,
             ),
@@ -425,7 +425,7 @@ Widget _buildAnnouncementsList() {
               icon: const Icon(Icons.clear),
               label: Text(
                 'Clear Filters',
-                style: GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
+                style: GoogleFonts. poppins(fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryTeal,

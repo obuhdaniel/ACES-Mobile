@@ -2,6 +2,7 @@
 import 'package:aces_uniben/features/tools/timetable/models/timetabole_data_model.dart';
 import 'package:aces_uniben/features/tools/timetable/services/timetable_api_services.dart';
 import 'package:aces_uniben/features/tools/timetable/services/timetable_db_helper.dart';
+import 'package:aces_uniben/services/background_initializers.dart';
 import 'package:flutter/foundation.dart';
 
 class TimeTableProvider with ChangeNotifier {
@@ -17,26 +18,50 @@ class TimeTableProvider with ChangeNotifier {
   TimeTableProvider();
 
   // Initialize the provider with dependencies
-  Future<void> initialize() async {
-    if (_isInitialized) return;
+  // In your TimeTableProvider
+Future<void> initialize() async {
+  if (_isInitialized) return;
+  
+  _isLoading = true;
+  notifyListeners();
+
+  try {
+    await _databaseHelper.database;
     
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      await _databaseHelper.database; // This ensures database is created
-      _isInitialized = true;
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _isLoading = false;
-      _error = 'Failed to initialize: $e';
-      notifyListeners();
-      rethrow;
+    // Check if background service has already loaded data
+    if (!BackgroundInitService.isInitialized) {
+      // If not, check if we have any data at all
+      final hasData = await _hasAnyData();
+      
+      if (!hasData) {
+        // Show a gentle message that data is loading in background
+        _error = 'Timetable data is loading in background...';
+        notifyListeners();
+      }
     }
+    
+    _isInitialized = true;
+    _isLoading = false;
+    notifyListeners();
+  } catch (e) {
+    _isLoading = false;
+    _error = 'Failed to initialize: $e';
+    notifyListeners();
+    rethrow;
   }
+}
 
-  List<TimeTableEntry> get timeTableEntries => _timeTableEntries;
+Future<bool> _hasAnyData() async {
+  try {
+    final db = await _databaseHelper.database;
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM timetable LIMIT 1'
+    );
+    return (result.first['count'] as int) > 0;
+  } catch (e) {
+    return false;
+  }
+}  List<TimeTableEntry> get timeTableEntries => _timeTableEntries;
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isInitialized => _isInitialized;
@@ -96,34 +121,46 @@ class TimeTableProvider with ChangeNotifier {
 
   // Get timetable by level and semester from local database - sorted by start time
   Future<void> getTimeTableByLevelAndSemester(
-    String level, 
-    String semester,
-  ) async {
-    if (!_isInitialized) await initialize();
+  String level, 
+  String semester,
+) async {
+  if (!_isInitialized) await initialize();
+  
+  _isLoading = true;
+  _error = null;
+  notifyListeners();
+
+  try {
+    final entries = await _databaseHelper.getTimeTableByLevelAndSemester(
+      level, 
+      semester,
+    );
     
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      final entries = await _databaseHelper.getTimeTableByLevelAndSemester(
-        level, 
-        semester,
-      );
-      
-      // Sort entries by their earliest start time
-      _timeTableEntries = _sortEntriesByStartTime(entries, null);
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _isLoading = false;
-      _error = e.toString();
-      notifyListeners();
-      rethrow;
+    // Add debug logging for release mode
+    if (kReleaseMode) {
+      print('Fetched ${entries.length} entries from database');
+      if (entries.isEmpty) {
+        print('No entries found for level: $level, semester: $semester');
+        
+      }
     }
+    
+    _timeTableEntries = _sortEntriesByStartTime(entries, null);
+    _isLoading = false;
+    notifyListeners();
+  } catch (e) {
+    _isLoading = false;
+    _error = 'Failed to fetch timetable: $e';
+    
+    if (kReleaseMode) {
+      print('Error fetching timetable: $e');
+      print('Stack trace: ${StackTrace.current}');
+    }
+    
+    notifyListeners();
+    rethrow;
   }
-
-  // Get entries for a specific day of the week - sorted by start time
+}  // Get entries for a specific day of the week - sorted by start time
   Future<List<TimeTableEntry>> getEntriesForDay(
     String level,
     String semester,

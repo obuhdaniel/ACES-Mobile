@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722668888668",
+    "project_id": "aces-uniben",
+    "storage_bucket": "aces-uniben.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722668888668:android:34c780e25bd4fa0d84fc99",
+        "android_client_info": {
+          "package_name": "com.obuh.aces_uniben"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALzbZf4N0MI1mxpqAcJ5B_cSdTZEEKh1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

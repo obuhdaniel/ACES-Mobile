@@ -66,7 +66,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           'MHS Articles',
-          style: GoogleFonts.nunitoSans(
+          style: GoogleFonts. poppins(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xFF1A1D29),
@@ -236,7 +236,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
                   const SizedBox(width: 4),
                   Text(
                     'MHS ARTICLE',
-                    style: GoogleFonts.nunitoSans(
+                    style: GoogleFonts. poppins(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -297,7 +297,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
               const SizedBox(width: 4),
               Text(
                 'MHS ARTICLE',
-                style: GoogleFonts.nunitoSans(
+                style: GoogleFonts. poppins(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.primaryTeal,
@@ -331,7 +331,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
           const SizedBox(width: 4),
           Text(
             formatRelativeTime(article.updatedAt),
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 11,
               fontWeight: FontWeight.w500,
               color: Colors.grey.shade600,
@@ -345,7 +345,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
   Widget _buildCardTitle(MHSArticle article) {
     return Text(
       article.title,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: const Color(0xFF1A1D29),
@@ -362,7 +362,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
     
     return Text(
       description,
-      style: GoogleFonts.nunitoSans(
+      style: GoogleFonts. poppins(
         fontSize: 14,
         color: const Color(0xFF64748B),
         height: 1.5,
@@ -383,7 +383,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
       ),
       child: Text(
         category.toUpperCase(),
-        style: GoogleFonts.nunitoSans(
+        style: GoogleFonts. poppins(
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: Colors.purple.shade800,
@@ -415,7 +415,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
             _searchQuery.isNotEmpty 
               ? 'No MHS articles found'
               : 'No MHS articles yet',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF1A1D29),
@@ -426,7 +426,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
             _searchQuery.isNotEmpty 
               ? 'Try adjusting your search or filters'
               : 'Check back later for new mental health articles',
-            style: GoogleFonts.nunitoSans(
+            style: GoogleFonts. poppins(
               fontSize: 14,
               color: Colors.grey.shade600,
             ),
@@ -443,7 +443,7 @@ class _MHSArticlesPageState extends State<MHSArticlesPage>
               icon: const Icon(Icons.clear),
               label: Text(
                 'Clear Filters',
-                style: GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
+                style: GoogleFonts. poppins(fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primaryTeal,
