@@ -28,31 +28,14 @@ class NotificationService {
 
   bool _isTimezoneInitialized = false;
   Function(String?)? _onNotificationTapCallback;
-  bool _isReleaseMode = kReleaseMode;
   bool _isInitialized = false;
-  
-  // Logger instance with different configurations for debug/release
-  late Logger _logger;
 
   NotificationService._internal() {
-    _initializeLogger();
+
     _initializeTimeZone();
   }
 
-  void _initializeLogger() {
-    _logger = Logger(
-      filter: DevelopmentFilter(),
-      printer: PrettyPrinter(
-        methodCount: 2,
-        errorMethodCount: 8,
-        lineLength: 120,
-        colors: true,
-        printEmojis: true,
-        printTime: true,
-      ),
-      output: ConsoleOutput(),
-    );
-  }
+
 
   void _initializeTimeZone() {
     if (!_isTimezoneInitialized) {
@@ -60,9 +43,9 @@ class NotificationService {
         tz.initializeTimeZones();
         tz.setLocalLocation(tz.getLocation('Africa/Lagos'));
         _isTimezoneInitialized = true;
-        _logger.i('Timezone initialized successfully');
+        print('Timezone initialized successfully');
       } catch (e) {
-        _logger.e('Failed to initialize timezone', error: e);
+        print('Failed to initialize timezone $e',);
       }
     }
   }
@@ -70,17 +53,16 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 
-  // Enable/disable notifications for testing
-  void setReleaseMode(bool isReleaseMode) {
-    _isReleaseMode = isReleaseMode;
-    _initializeLogger(); // Reinitialize logger with new mode
-    _logger.i('Release mode set to: $isReleaseMode');
-  }
+
+
+      
+
+
 Future<NotificationAppLaunchDetails?> initialize({
     Function(String?)? onNotificationTap,
   }) async {
     _onNotificationTapCallback = onNotificationTap;
-    _logger.i('Initializing Notification Service');
+    print('Initializing Notification Service');
 
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -99,19 +81,15 @@ Future<NotificationAppLaunchDetails?> initialize({
     );
 
     try {
-      if (_isReleaseMode) {
-        _logger.w('Notifications disabled in release mode');
-        return null;
-      }
 
       final NotificationAppLaunchDetails? launchDetails =
           await _notifications.getNotificationAppLaunchDetails();
-      _logger.d('Notification launch details: ${launchDetails?.didNotificationLaunchApp}');
+      print('Notification launch details: ${launchDetails?.didNotificationLaunchApp}');
 
       await _notifications.initialize(
         settings,
         onDidReceiveNotificationResponse: (NotificationResponse response) {
-          _logger.i('Notification tapped: ${response.payload}');
+          print('Notification tapped: ${response.payload}');
           _onNotificationTapCallback?.call(response.payload);
         },
         // Use the top-level function for background handling
@@ -119,12 +97,10 @@ Future<NotificationAppLaunchDetails?> initialize({
       );
 
       _isInitialized = true;
-      _logger.i('Notification service initialized successfully');
+      print('Notification service initialized successfully');
       return launchDetails;
     } catch (e, stackTrace) {
-      _logger.e('Error initializing notifications', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error initializing notifications $e');
       _isInitialized = false;
       return null;
     }
@@ -133,23 +109,19 @@ Future<NotificationAppLaunchDetails?> initialize({
   // Add this method to handle background notifications when app is in foreground
   void handleBackgroundNotification(String? payload) {
     if (payload != null) {
-      _logger.i('Processing background notification payload: $payload');
+      print('Processing background notification payload: $payload');
       _onNotificationTapCallback?.call(payload);
     }
   }
   
     /// Requests notification permissions for both Android and iOS
     Future<bool> requestPermissions() async {
-    _logger.i('Requesting notification permissions');
+    print('Requesting notification permissions');
     
     try {
-      if (_isReleaseMode) {
-        _logger.w('Permission requests disabled in release mode');
-        return false;
-      }
 
       if (!_isInitialized) {
-        _logger.w('Notification service not initialized. Call initialize() first.');
+        print('Notification service not initialized. Call initialize() first.');
         return false;
       }
 
@@ -159,25 +131,25 @@ Future<NotificationAppLaunchDetails?> initialize({
           AndroidFlutterLocalNotificationsPlugin>();
       
       if (androidPlugin != null) {
-        _logger.d('Requesting Android permissions');
+        print('Requesting Android permissions');
         final bool? notificationsGranted =
             await androidPlugin.requestNotificationsPermission();
         final bool? exactAlarmsGranted =
             await androidPlugin.requestExactAlarmsPermission();
         
-        _logger.d('Android permissions - Notifications: $notificationsGranted, Exact Alarms: $exactAlarmsGranted');
+        print('Android permissions - Notifications: $notificationsGranted, Exact Alarms: $exactAlarmsGranted');
         
         permissionsGranted =
             (notificationsGranted ?? false) && (exactAlarmsGranted ?? true);
       } else {
-        _logger.w('Android notifications plugin not available');
+        print('Android notifications plugin not available');
       }
 
       final iosPlugin = _notifications.resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>();
       
       if (iosPlugin != null) {
-        _logger.d('Requesting iOS permissions');
+        print('Requesting iOS permissions');
         final iosSettings = await iosPlugin.checkPermissions();
         
         if (iosSettings?.isEnabled != true) {
@@ -187,35 +159,30 @@ Future<NotificationAppLaunchDetails?> initialize({
             sound: true,
             critical: false,
           );
-          _logger.d('iOS permissions granted: $iosGranted');
+          print('iOS permissions granted: $iosGranted');
           permissionsGranted = iosGranted ?? false;
         } else {
-          _logger.d('iOS permissions already granted');
+          print('iOS permissions already granted');
         }
       } else {
-        _logger.w('iOS notifications plugin not available');
+        print('iOS notifications plugin not available');
       }
 
-      _logger.i('Permission request completed: $permissionsGranted');
+      print('Permission request completed: $permissionsGranted');
       return permissionsGranted;
     } catch (e, stackTrace) {
-      _logger.e('Error requesting permissions', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error requesting permissions ${e}');
       return false;
     }
   }  /// Checks if notification permissions are granted
   Future<bool> arePermissionsGranted() async {
-    _logger.d('Checking notification permissions');
+    print('Checking notification permissions');
     
     try {
-      if (_isReleaseMode) {
-        _logger.d('Release mode - permissions considered not granted');
-        return false;
-      }
+
 
       if (!_isInitialized) {
-        _logger.w('Notification service not initialized');
+        print('Notification service not initialized');
         return false;
       }
 
@@ -230,7 +197,7 @@ Future<NotificationAppLaunchDetails?> initialize({
         final bool? exactAlarmsGranted =
             await androidPlugin.canScheduleExactNotifications();
         
-        _logger.d('Android permissions - Enabled: $notificationsGranted, Exact: $exactAlarmsGranted');
+        print('Android permissions - Enabled: $notificationsGranted, Exact: $exactAlarmsGranted');
         
         if (!(notificationsGranted ?? false) || !(exactAlarmsGranted ?? true)) {
           allGranted = false;
@@ -242,44 +209,38 @@ Future<NotificationAppLaunchDetails?> initialize({
       
       if (iosPlugin != null) {
         final iosSettings = await iosPlugin.checkPermissions();
-        _logger.d('iOS permissions: ${iosSettings?.isEnabled}');
+        print('iOS permissions: ${iosSettings?.isEnabled}');
         if (!(iosSettings?.isEnabled ?? false)) {
           allGranted = false;
         }
       }
 
-      _logger.i('Permissions granted: $allGranted');
+      print('Permissions granted: $allGranted');
       return allGranted;
     } catch (e, stackTrace) {
-      _logger.e('Error checking permissions', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error checking permissions ${e}');
       return false;
     }
   }
 
   Future<void> handleColdStart() async {
-    _logger.i('Handling cold start');
+    print('Handling cold start');
     
     try {
-      if (_isReleaseMode) {
-        _logger.d('Skipping cold start handling in release mode');
-        return;
-      }
+
+
 
       final NotificationAppLaunchDetails? launchDetails =
           await _notifications.getNotificationAppLaunchDetails();
 
       if (launchDetails?.didNotificationLaunchApp ?? false) {
         final payload = launchDetails?.notificationResponse?.payload;
-        _logger.i('App launched from notification with payload: $payload');
+        print('App launched from notification with payload: $payload');
       } else {
-        _logger.d('App not launched from notification');
+        print('App not launched from notification');
       }
     } catch (e, stackTrace) {
-      _logger.e('Error handling cold start', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error handling cold start $e');
     }
   }
 
@@ -290,24 +251,21 @@ Future<NotificationAppLaunchDetails?> initialize({
     required String imageUrl,
     String? payload,
   }) async {
-    _logger.i('Showing image notification: $title');
+    print('Showing image notification: $title');
     
-    if (_isReleaseMode) {
-      _logger.w('Notification suppressed in release mode: $title');
-      return;
-    }
+
 
     if (!_isInitialized) {
-      _logger.e('Notification service not initialized. Call initialize() first.');
+      print('Notification service not initialized. Call initialize() first.');
       return;
     }
 
     final bool hasPermissions = await arePermissionsGranted();
     if (!hasPermissions) {
-      _logger.w('No notification permissions, requesting...');
+      print('No notification permissions, requesting...');
       final granted = await requestPermissions();
       if (!granted) {
-        _logger.e('Cannot show notification: Permissions not granted');
+        print('Cannot show notification: Permissions not granted');
         return;
       }
     }
@@ -316,17 +274,17 @@ Future<NotificationAppLaunchDetails?> initialize({
     final String filePath = '${tempDir.path}/notif_$id.jpg';
 
     try {
-      _logger.d('Downloading image from: $imageUrl');
+      print('Downloading image from: $imageUrl');
       final response = await http.get(Uri.parse(imageUrl));
       
       if (response.statusCode != 200) {
-        _logger.e('Failed to download image. Status code: ${response.statusCode}');
+        print('Failed to download image. Status code: ${response.statusCode}');
         throw Exception('HTTP ${response.statusCode}');
       }
 
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
-      _logger.d('Image saved to: $filePath');
+      print('Image saved to: $filePath');
 
       final bigPicture = BigPictureStyleInformation(
         FilePathAndroidBitmap(file.path),
@@ -350,16 +308,14 @@ Future<NotificationAppLaunchDetails?> initialize({
         iOS: iosDetails,
       );
 
-      _logger.d('Showing notification with ID: $id');
+      print('Showing notification with ID: $id');
       await _notifications.show(id, title, body, details, payload: payload);
-      _logger.i('Image notification shown successfully: $title');
+      print('Image notification shown successfully: $title');
 
     } catch (e, stackTrace) {
-      _logger.e('Error showing image notification: $title', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error showing image notification: $title error: $e',);
       
-      _logger.w('Falling back to simple notification');
+      print('Falling back to simple notification');
       await showSimpleNotification(
         id: id, 
         title: title, 
@@ -376,24 +332,21 @@ Future<NotificationAppLaunchDetails?> initialize({
     required String body,
     String? payload,
   }) async {
-    _logger.i('Showing simple notification: $title');
+    print('Showing simple notification: $title');
     
-    if (_isReleaseMode) {
-      _logger.w('Notification suppressed in release mode: $title');
-      return;
-    }
+
 
     if (!_isInitialized) {
-      _logger.e('Notification service not initialized. Call initialize() first.');
+      print('Notification service not initialized. Call initialize() first.');
       return;
     }
 
     final bool hasPermissions = await arePermissionsGranted();
     if (!hasPermissions) {
-      _logger.w('No notification permissions, requesting...');
+      print('No notification permissions, requesting...');
       final granted = await requestPermissions();
       if (!granted) {
-        _logger.e('Cannot show notification: Permissions not granted');
+        print('Cannot show notification: Permissions not granted');
         return;
       }
     }
@@ -413,14 +366,12 @@ Future<NotificationAppLaunchDetails?> initialize({
         iOS: iosDetails,
       );
 
-      _logger.d('Showing notification with ID: $id');
+      print('Showing notification with ID: $id');
       await _notifications.show(id, title, body, details, payload: payload);
-      _logger.i('Simple notification shown successfully: $title');
+      print('Simple notification shown successfully: $title');
 
     } catch (e, stackTrace) {
-      _logger.e('Error showing simple notification: $title', 
-                error: e, 
-                stackTrace: stackTrace);
+      print('Error showing simple notification: $title Error: $e',);
     }
   }
 
@@ -433,10 +384,7 @@ Future<NotificationAppLaunchDetails?> initialize({
     String? payload,
   }) async {
     // Skip scheduling in release mode
-    if (_isReleaseMode) {
-      print('Notification scheduling suppressed in release mode: $title');
-      return;
-    }
+
 
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
@@ -489,10 +437,8 @@ Future<NotificationAppLaunchDetails?> initialize({
     String? payload,
   }) async {
     // Skip scheduling in release mode
-    if (_isReleaseMode) {
-      print('Daily notification suppressed in release mode: $title');
-      return;
-    }
+
+
 
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
@@ -555,11 +501,7 @@ Future<NotificationAppLaunchDetails?> initialize({
     required TimeOfDay notificationTime,
     String? payload,
   }) async {
-    // Skip scheduling in release mode
-    if (_isReleaseMode) {
-      print('Weekly notification suppressed in release mode: $title');
-      return;
-    }
+
 
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
@@ -625,11 +567,7 @@ Future<NotificationAppLaunchDetails?> initialize({
     required DateTime deadline,
     String? payload,
   }) async {
-    // Skip scheduling in release mode
-    if (_isReleaseMode) {
-      print('Todo notification suppressed in release mode: $title');
-      return;
-    }
+
 
     if (!await arePermissionsGranted()) {
       final granted = await requestPermissions();
@@ -685,5 +623,84 @@ Future<NotificationAppLaunchDetails?> initialize({
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
     return await _notifications.pendingNotificationRequests();
+  }
+
+
+
+  
+}
+
+
+// Extension to your NotificationService class
+extension NotificationServiceExtension on NotificationService {
+  /// Checks if notifications are enabled at both system and app level
+  Future<bool> areNotificationsEnabled() async {
+    try {
+  
+      final bool areEnabled = await _checkPlatformNotificationsEnabled();
+      return areEnabled;
+    } catch (e) {
+     
+      return false;
+    }
+  }
+
+  Future<bool> _checkPlatformNotificationsEnabled() async {
+    if (Platform.isAndroid) {
+      return await _checkAndroidNotificationsEnabled();
+    } else if (Platform.isIOS) {
+      return await _checkIOSNotificationsEnabled();
+    }
+   
+    return false;
+  }
+
+  /// Android-specific notification checks
+  Future<bool> _checkAndroidNotificationsEnabled() async {
+    try {
+      final androidPlugin =NotificationService. _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      
+      if (androidPlugin == null) {
+        return false;
+      }
+
+      // Check if notifications are enabled system-wide
+      final bool? systemEnabled = await androidPlugin.areNotificationsEnabled();
+      
+      // Check if exact alarms are permitted (for scheduling)
+      final bool? exactAlarmsEnabled = 
+          await androidPlugin.canScheduleExactNotifications();
+      
+      // Check if app notifications are enabled in system settings
+      final bool? appEnabled = await androidPlugin.areNotificationsEnabled();
+
+     
+      return (systemEnabled ?? false) && 
+             (exactAlarmsEnabled ?? true) && 
+             (appEnabled ?? false);
+    } catch (e) {
+      
+      return false;
+    }
+  }
+
+  /// iOS-specific notification checks
+  Future<bool> _checkIOSNotificationsEnabled() async {
+    try {
+      final iosPlugin =NotificationService. _notifications.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
+      
+      if (iosPlugin == null) {
+        return false;
+      }
+
+      // Check iOS notification permissions
+      final notificationSettings = await iosPlugin.checkPermissions();
+
+      return notificationSettings?.isEnabled ?? false;
+    } catch (e) {
+      return false;
+    }
   }
 }

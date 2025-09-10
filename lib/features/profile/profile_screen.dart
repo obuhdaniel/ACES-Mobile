@@ -218,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icons.notifications_active_outlined,
           title: 'Enable Notifications',
           subtitle: 'Stay updated with reminders and alerts',
-          onTap: () => NotificationPermissionDialog.show(context),),
+          onTap: () => NotificationPermissionDialog.show(context, shouldShowAlreadyEnabledDialog: true),),
         const SizedBox(height: 12),
         _buildMenuItem(
           icon: Icons.schedule_outlined,

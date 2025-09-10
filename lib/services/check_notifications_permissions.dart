@@ -3,13 +3,18 @@ import 'package:aces_uniben/features/notifications/notification_service.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPermissionDialog {
-  static Future<void> show(BuildContext context) async {
+  
+  static Future<void> show(BuildContext context, {
+    bool shouldShowAlreadyEnabledDialog = false,
+  }) async {
     // First check if notifications are already enabled
     bool isEnabled = await NotificationService().areNotificationsEnabled();
     
     if (isEnabled) {
-      // Show already enabled dialog
+      if (shouldShowAlreadyEnabledDialog) {
+        
       _showAlreadyEnabledDialog(context);
+      }
     } else {
       // Show permission request dialog
       _showPermissionDialog(context);
@@ -389,15 +394,7 @@ class NotificationPermissionDialog {
   }
 }
 
-// Extension to your NotificationService class
-extension NotificationServiceExtension on NotificationService {
-  Future<bool> areNotificationsEnabled() async {
-    // TODO: Implement this method to check current notification status
-    // This might involve checking system settings or your app's notification state
-    // For now, returning false to always show the permission dialog
-    return false;
-  }
-}
+
 
 // Usage example:
 // Replace your current onTap with:
