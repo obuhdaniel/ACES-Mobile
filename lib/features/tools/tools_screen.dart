@@ -1,6 +1,7 @@
 import 'package:aces_uniben/config/app_theme.dart';
+import 'package:aces_uniben/features/tools/elaborate/elaboarte_screen.dart';
 import 'package:aces_uniben/features/tools/journal/view_journal_list_screen.dart';
-import 'package:aces_uniben/features/tools/pq/pq_screen.dart';
+import 'package:aces_uniben/features/tools/pq/pq_screen.dart' hide PastQuestionsPage;
 import 'package:aces_uniben/features/tools/timetable/view_timetable_screen.dart';
 import 'package:aces_uniben/features/tools/todo/view_todo_screen.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,27 @@ class ToolsPage extends StatelessWidget {
               illustration: _buildPastQuestionsIllustration(),
               color: Colors.purple.shade600,
               onTap: () => _handleToolTap(context, 'Past Questions'),
+            ),
+
+                        
+            const SizedBox(height: 20),
+
+              _buildToolCard(
+              title: 'Class Resources',
+              description: 'Access drive links for your current Semester courses Resources',
+              illustration: _buildClassListIllustration(),
+              color: Colors.lime.shade600,
+              onTap: () => _handleToolTap(context, 'Class'),
+            ),
+
+                        
+            const SizedBox(height: 20),
+            _buildToolCard(
+              title: 'Elaborate',
+              description: 'Engineering Labs, Simplified!!',
+              illustration: _buildElaborateIllustration(),
+              color: Colors.lime.shade600,
+              onTap: () => _handleToolTap(context, 'ELA'),
             ),
           ],
         ),
@@ -168,6 +190,19 @@ class ToolsPage extends StatelessWidget {
       fit: BoxFit.contain,
     );
   }
+  Widget _buildClassListIllustration() {
+    return Image.asset(
+      'assets/images/class.png',
+      fit: BoxFit.contain,
+    );
+  }
+  
+    Widget _buildElaborateIllustration() {
+    return Image.asset(
+      'assets/images/elaborate.png',
+      fit: BoxFit.contain,
+    );
+  }
 
   Widget _buildChecklistItem(bool isChecked) {
     return Row(
@@ -219,7 +254,9 @@ class ToolsPage extends StatelessWidget {
        Navigator.push(context, MaterialPageRoute(builder: (context) => const JournalListPage()));
 
     } else if (toolName == 'Past Questions') {
-       Navigator.push(context, MaterialPageRoute(builder: (context) => PastQuestionsPage()));
+       Navigator.push(context, MaterialPageRoute(builder: (context) => ElaboratePage()));
+     } else if (toolName == 'ELA') {
+       Navigator.push(context, MaterialPageRoute(builder: (context) => ElaboratePage()));
     }
   }
 }
