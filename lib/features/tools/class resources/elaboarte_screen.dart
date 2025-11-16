@@ -1,3 +1,4 @@
+import 'package:aces_uniben/config/app_theme.dart';
 import 'package:aces_uniben/services/webview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,57 +7,75 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 
-class ElaboratePage extends StatefulWidget {
-  const ElaboratePage({super.key});
+class ClassResourccesPage extends StatefulWidget {
+  const ClassResourccesPage({super.key});
 
   @override
-  State<ElaboratePage> createState() => _ElaboratePageState();
+  State<ClassResourccesPage> createState() => _ClassResourccesPageState();
 }
 
-class _ElaboratePageState extends State<ElaboratePage>
+class _ClassResourccesPageState extends State<ClassResourccesPage>
     with TickerProviderStateMixin {
   final Color primaryColor = const Color(0xFF166D86);
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
   final List<ElaboarateLevel> levels = [
+
+      //TODO: HANDLE 1100L SECOND SEMESTER LINK
+
+
+       ElaboarateLevel(
+      id: '100L',
+      name: '100L',
+     
+      colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      departments: [
+        
+        
+        Departments(
+        id: '1001',
+        name: '100L 1st Semester',
+       
+        icon: '1st',
+      
+        link: 'https://drive.google.com/drive/folders/1wKZ5C60eviQCt0Bp42kvc1I2T2TjDvgQ',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      ),
+
+
+
+      ]
+    ),
    
    ElaboarateLevel(
       id: '200L',
       name: '200L',
      
-      colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
+      colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
       departments: [
         
         
         Departments(
-        id: 'MEE200',
-        name: 'Mechanical ELA',
+        id: '2001',
+        name: '200L 1st Semester',
        
-        icon: 'MEE',
+        icon: '1st',
       
-        link: 'https://elaborate.com.ng/report/mee/mee.html#getting-started',
-        colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
+        link: 'https://drive.google.com/drive/folders/1RLLoQ1_u6ubDAH0CJ6R77eEgCR1-khuh',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
       ),
 
        Departments(
-        id: 'EEE200',
-        name: 'Electrical ELA',
+        id: '2002',
+        name: '200L 2nd Semester',
        
-        icon: 'EEE',
+        icon: '2nd',
       
-        link: 'https://elaborate.com.ng/report/eee/eee.html#getting-started',
-        colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
+        link: 'https://drive.google.com/drive/folders/1aLetNYmTDqyhnnF9liw2MotftQOZtPi0',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
       ),
-      Departments(
-        id: 'PRE200',
-        name: 'Production ELA',
-       
-        icon: 'PRE',
-      
-        link: 'https://elaborate.com.ng/report/pre/pre.html#getting-started',
-        colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
-      ),
+    
 
 
       ]
@@ -68,16 +87,32 @@ class _ElaboratePageState extends State<ElaboratePage>
       id: '300L',
       name: '300L',
      
-      colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
-      departments: [Departments(
-        id: 'cpe300',
-        name: 'Computer ELA',
+      colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      departments: [
+        
+        
+        Departments(
+        id: '3001',
+        name: '300L 1st Semester',
        
-        icon: 'CPE',
+        icon: '1st',
       
-        link: 'https://elaborate.com.ng/report/cpe/cpe.html#getting-started',
-        colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
+        link: 'https://drive.google.com/drive/folders/1DnWT-ht8Ic9kPQHqIz1dy30Umg2wy0xK',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
       ),
+
+       Departments(
+        id: '3002',
+        name: '300L 2nd Semester',
+       
+        icon: '2nd',
+      
+        link: 'https://drive.google.com/drive/folders/1rvVtLvptdaoOg3xA0w2Pal_EcQvrt5Zd',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      ),
+    
+
+
       ]
     ),
   
@@ -86,16 +121,62 @@ class _ElaboratePageState extends State<ElaboratePage>
       id: '400L',
       name: '400L',
      
-      colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
-      departments: [Departments(
-        id: 'cpe400',
-        name: 'Computer ELA',
-       
-        icon: 'CPE',
       
-        link: 'https://elaborate.com.ng/report/cpe/cpe.html#getting-started',
-        colors: [const Color(0xFFF59E0B), const Color(0xFFEF4444)],
+      colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      departments: [
+        
+        
+        Departments(
+        id: '4001',
+        name: '400L 1st Semester',
+       
+        icon: '1st',
+      
+        link: 'https://drive.google.com/drive/folders/1MiGK2X4jUZo4wd_IqqB9YhT86ZpyvmWO',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
       ),
+
+      
+    
+
+
+      ]
+    ),
+
+
+     ElaboarateLevel(
+      id: '500L',
+      name: '500L',
+     
+      
+      colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      departments: [
+        
+        
+        Departments(
+        id: '5001',
+        name: '500L 1st Semester',
+       
+        icon: '1st',
+      
+        link: 'https://drive.google.com/drive/folders/1OZkr983e3aIb9H8qwt5vmoQmujpYzCO0',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      ),
+
+        Departments(
+        id: '5001',
+        name: '500L 1st Semester',
+       
+        icon: '2nd',
+      
+        link: 'https://drive.google.com/drive/folders/1xr_kn4ajGJ3w12W0Z_NqG2oLORdLvJoK',
+        colors: [AppTheme.primaryTeal.withOpacity(0.6), AppTheme.primaryTeal],
+      ),
+
+      
+    
+
+
       ]
     ),
   
@@ -197,7 +278,7 @@ Widget _buildModernHeader(BuildContext context) {
           Column(
             children: [
               Text(
-                "Elaborate",
+                "Resources",
                 style:  GoogleFonts.poppins(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w700,
@@ -554,7 +635,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'About Elaborate',
+                        'Quick Tip',
                         style:  GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -562,9 +643,7 @@ class _SemesterSelectionPageState extends State<SemesterSelectionPage>
                         ),
                       ),
                       Text(
-'Elaborate is a SabiDevs initiative created to help Engineering students. '
-        'Elaborate equips you with the essential resources and expert tips to craft concise, '
-        'impactful reports that showcase your understanding.',
+                        'All files will open in Google Drive. Make sure you\'re logged in.',
                         style:  GoogleFonts.poppins(
                           fontSize: 13,
                           color: Colors.blue[700],

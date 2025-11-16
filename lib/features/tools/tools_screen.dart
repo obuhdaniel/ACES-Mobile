@@ -1,7 +1,8 @@
 import 'package:aces_uniben/config/app_theme.dart';
+import 'package:aces_uniben/features/tools/class%20resources/elaboarte_screen.dart';
 import 'package:aces_uniben/features/tools/elaborate/elaboarte_screen.dart';
 import 'package:aces_uniben/features/tools/journal/view_journal_list_screen.dart';
-import 'package:aces_uniben/features/tools/pq/pq_screen.dart' hide PastQuestionsPage;
+import 'package:aces_uniben/features/tools/pq/pq_screen.dart';
 import 'package:aces_uniben/features/tools/timetable/view_timetable_screen.dart';
 import 'package:aces_uniben/features/tools/todo/view_todo_screen.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class ToolsPage extends StatelessWidget {
               description: 'Access drive links for your current Semester courses Resources',
               illustration: _buildClassListIllustration(),
               color: Colors.lime.shade600,
-              onTap: () => _handleToolTap(context, 'Class'),
+              onTap: () => _handleToolTap(context, 'C'),
             ),
 
                         
@@ -254,9 +255,12 @@ class ToolsPage extends StatelessWidget {
        Navigator.push(context, MaterialPageRoute(builder: (context) => const JournalListPage()));
 
     } else if (toolName == 'Past Questions') {
-       Navigator.push(context, MaterialPageRoute(builder: (context) => ElaboratePage()));
+       Navigator.push(context, MaterialPageRoute(builder: (context) => PastQuestionsPage()));
      } else if (toolName == 'ELA') {
        Navigator.push(context, MaterialPageRoute(builder: (context) => ElaboratePage()));
+    } else if (toolName == 'C') {
+       Navigator.push(context, MaterialPageRoute(builder: (context) => ClassResourccesPage()));
     }
+
   }
 }
