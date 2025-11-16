@@ -89,10 +89,12 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       builder: (context, timetableProvider, authProvider, child) {
         // Auto-select current user's level if available
         final userLevel = authProvider.user?.level;
+        final userSemester = authProvider.semester;
         if (userLevel != null && userLevel != selectedLevel) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             setState(() {
               selectedLevel = userLevel;
+              selectedSemester = userSemester ?? 'Second';
             });
             _loadTimeTable();
           });

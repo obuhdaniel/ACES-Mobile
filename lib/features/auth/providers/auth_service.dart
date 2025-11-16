@@ -36,6 +36,31 @@ class AuthService {
   }
 
 
+  Future<Response> getSemester() async {
+    try {
+      
+      final response = await _dio.get(
+        ApiConfig.currentSemesterEndpoint,
+       
+      );
+
+      _logger.i("Semester loaded successful");
+      _logger.d("Response: ${response.data}");
+      
+      return response;
+    } on DioException catch (dioError) {
+      _logger.e("Request failed: ${dioError.message}");
+      if (dioError.response != null) {
+        _logger.e("Status: ${dioError.response?.statusCode}, Data: ${dioError.response?.data}");
+      }
+      rethrow;
+    } catch (e) {
+      _logger.e("Unexpected loading semester error: $e");
+      rethrow;
+    }
+  }
+
+
   
   Future<Response> forgotPassword(String email) async {
     try {

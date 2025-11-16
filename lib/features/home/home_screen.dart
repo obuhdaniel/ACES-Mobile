@@ -38,11 +38,12 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<TodoProvider>(context, listen: false).loadTodayStats();
       Provider.of<AuthProvider>(context, listen: false).loadUser();
+      Provider.of<AuthProvider>(context, listen: false).getCurrentSemester();
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final timetableProvider =
           Provider.of<TimeTableProvider>(context, listen: false);
       final userLevel = authProvider.user?.level ?? '500L';
-      final userSemester = 'Second';
+      final userSemester = authProvider.semester ?? 'First';
       NotificationPermissionDialog.show(context);
 
       timetableProvider.getEntriesForToday(userLevel, userSemester);
@@ -299,7 +300,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
         builder: (context, timetableProvider, child) {
       final now = DateTime.now();
       final userLevel = authProvider.user?.level ?? '100L';
-      final userSemester = 'Second';
+      final userSemester = authProvider.semester ?? 'First';
       final dayOfWeek = _getDayName(now.weekday);
 
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

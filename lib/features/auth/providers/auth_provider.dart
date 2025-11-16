@@ -9,10 +9,12 @@ import 'package:logger/logger.dart';
 
 class AuthProvider with ChangeNotifier {
   AcesStudent? _user;
+  String? _semester;
 
   AcesStudent? get user => _user;
   bool get isAuthenticated => _user != null;
   String? _error;
+  String? get semester => _semester;
 
   
 
@@ -24,6 +26,7 @@ class AuthProvider with ChangeNotifier {
     final token = await DBHelper.getToken();
     notifyListeners();
   }
+  
 
   Future<bool> login(String email, String password) async {
 
@@ -194,5 +197,29 @@ Future<Map<String, dynamic>> forgotPassword(String email) async {
     _user = null;
     await DBHelper.clearProfile();
     notifyListeners();
+  }
+  
+
+  Future<void> getCurrentSemester() async{
+      try {
+      final response = await _authService.getSemester();
+
+      if (response.statusCode == 200) {
+        final data = response.data?['currentSemester'];
+
+        await SecureStorage.setSemester(data);
+
+        _semester = data;
+
+       
+        notifyListeners();
+        
+      } else {
+         await SecureStorage.setSemester('First');
+      }
+    } catch (e) {
+      debugPrint("Fetch error: $e");
+      
+    }
   }
 }

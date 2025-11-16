@@ -11,4 +11,6 @@ class ApiConfig {
   static const String profileEndpoint = "/api/student/auth/profile";
   static const String forumEndpoint = "/api/admin/forum/read";
   static const String timetableEndpoint = "/api/admin/timetable/read";
+  static const String currentSemesterEndpoint = "/api/admin/timetable/current-semester";
+
 }
