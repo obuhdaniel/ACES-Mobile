@@ -49,6 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 32),
               _buildAccountSection(),
               const SizedBox(height: 40),
+              // AppSectionWidget(),
+              
               _buildLogoutButton(context, authProvider),
               const SizedBox(height: 20),
             ],
@@ -130,6 +132,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 4),
                 Text(
                   authProvider.user?.level ?? '100L',
+
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+
+                 Text(
+                  "${authProvider.semester} Semester "?? '',
+                  
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -194,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) => const WebviewWidget(
-                      url: 'https://acesuniben.org/aces',
+                      url: 'https://acesuniben.org/about#executives',
                       title: 'ACES Next-Wave Executives'))),
         ),
       ],
@@ -223,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _buildMenuItem(
           icon: Icons.schedule_outlined,
           title: 'Learning Scheduler',
-          subtitle: 'Plan and manage your learninh time',
+          subtitle: 'Plan and manage your learning time',
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(

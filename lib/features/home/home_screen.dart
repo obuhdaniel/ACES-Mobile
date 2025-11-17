@@ -649,7 +649,7 @@ class _ACESHomeScreenState extends State<ACESHomeScreen> {
       alignment: Alignment.centerRight,
       child: ElevatedButton.icon(
         onPressed: () =>
-            timetableProvider.fetchAndSyncTimeTable(),
+            timetableProvider.fetchAndSyncTimeTable(s: userSemester, l: userLevel),
         icon: const Icon(Icons.refresh, size: 18),
         label: const Text('Sync'),
         style: ElevatedButton.styleFrom(

@@ -534,6 +534,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                                 label: "Matriculation Number",
                                 controller: _matricNoController,
                                 focusNode: _matricNoFocus,
+                                readOnly: true,
                                 nextFocusNode: _levelFocus,
                                 validator: _validateMatricNo,
                                 prefixIcon: Icons.badge_outlined,
@@ -550,6 +551,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                                 controller: _emailController,
                                 focusNode: _emailFocus,
                                 nextFocusNode: _phoneFocus,
+                                readOnly: true,
                                 validator: _validateEmail,
                                 prefixIcon: Icons.email_outlined,
                                 keyboardType: TextInputType.emailAddress,
@@ -637,106 +639,106 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       ),
     );
   }
-
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    FocusNode? nextFocusNode,
-    String? Function(String?)? validator,
-    IconData? prefixIcon,
-    TextInputType keyboardType = TextInputType.text,
-    TextCapitalization textCapitalization = TextCapitalization.none,
-    String? hintText,
-    TextInputAction textInputAction = TextInputAction.next,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.nunitoSans(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppTheme.textColor,
-          ),
+Widget _buildTextField({
+  required String label,
+  required TextEditingController controller,
+  required FocusNode focusNode,
+  FocusNode? nextFocusNode,
+  String? Function(String?)? validator,
+  IconData? prefixIcon,
+  TextInputType keyboardType = TextInputType.text,
+  TextCapitalization textCapitalization = TextCapitalization.none,
+  String? hintText,
+  TextInputAction textInputAction = TextInputAction.next,
+  bool readOnly = false, // ✅ new parameter
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: GoogleFonts.nunitoSans(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: AppTheme.textColor,
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          focusNode: focusNode,
-          keyboardType: keyboardType,
-          textCapitalization: textCapitalization,
-          textInputAction: textInputAction,
-          validator: validator,
-          onFieldSubmitted: (_) {
-            if (nextFocusNode != null) {
-              FocusScope.of(context).requestFocus(nextFocusNode);
-            }
-          },
-          style: TextStyle(
-            fontSize: 16,
-            color: AppTheme.textColor,
-          ),
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(
-              color: Colors.grey.shade400,
-              fontSize: 14,
-            ),
-            prefixIcon: prefixIcon != null
-                ? Icon(
-                    prefixIcon,
-                    color: focusNode.hasFocus
-                        ? AppTheme.primaryTeal
-                        : Colors.grey.shade400,
-                    size: 20,
-                  )
-                : null,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
-            filled: true,
-            fillColor: Colors.grey.shade50,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey.shade200,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: AppTheme.primaryTeal,
-                width: 2,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 1,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 2,
-              ),
-            ),
-            errorStyle: const TextStyle(fontSize: 12),
-          ),
+      ),
+      const SizedBox(height: 8),
+      TextFormField(
+        controller: controller,
+        focusNode: focusNode,
+        keyboardType: keyboardType,
+        textCapitalization: textCapitalization,
+        textInputAction: textInputAction,
+        validator: validator,
+        readOnly: readOnly, // ✅ apply readOnly
+        onFieldSubmitted: (_) {
+          if (nextFocusNode != null) {
+            FocusScope.of(context).requestFocus(nextFocusNode);
+          }
+        },
+        style: TextStyle(
+          fontSize: 16,
+          color: AppTheme.textColor,
         ),
-      ],
-    );
-  }
-
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: Colors.grey.shade400,
+            fontSize: 14,
+          ),
+          prefixIcon: prefixIcon != null
+              ? Icon(
+                  prefixIcon,
+                  color: focusNode.hasFocus
+                      ? AppTheme.primaryTeal
+                      : Colors.grey.shade400,
+                  size: 20,
+                )
+              : null,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+          filled: true,
+          fillColor: Colors.grey.shade50,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: Colors.grey.shade200,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppTheme.primaryTeal,
+              width: 2,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 1,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 2,
+            ),
+          ),
+          errorStyle: const TextStyle(fontSize: 12),
+        ),
+      ),
+    ],
+  );
+}
   Widget _buildLevelDropdown() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

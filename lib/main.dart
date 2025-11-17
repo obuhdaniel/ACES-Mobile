@@ -39,7 +39,7 @@ Future<void> main() async {
 );
   ApiService.wakeUpServer();
 
-    BackgroundInitService().initializeInBackground();
+    // BackgroundInitService().initializeInBackground();
 
 
   final notificationService = NotificationService();

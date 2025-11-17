@@ -98,7 +98,7 @@ Future<bool> _hasAnyData() async {
   }
 
   // Fetch timetable from API and sync to local database
-  Future<void> fetchAndSyncTimeTable() async {
+  Future<void> fetchAndSyncTimeTable({String? s, String? l}) async {
     if (!_isInitialized) await initialize();
     
     _isLoading = true;
@@ -106,7 +106,7 @@ Future<bool> _hasAnyData() async {
     notifyListeners();
 
     try {
-      final timeTableResponse = await _apiService.fetchTimeTable();
+      final timeTableResponse = await _apiService.fetchTimeTable(level: l, semester: s);
       await _databaseHelper.syncTimeTable(timeTableResponse);
       
       _isLoading = false;

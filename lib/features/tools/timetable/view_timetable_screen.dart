@@ -13,9 +13,12 @@ class TimeTableScreen extends StatefulWidget {
 }
 
 class _TimeTableScreenState extends State<TimeTableScreen> {
-  String selectedDay = 'Mon';
-  String selectedSemester = 'Second';
-  String selectedLevel = '500L';
+  // These will be initialized in initState with smart defaults
+  late String selectedDay;
+  late String selectedSemester;
+  late String selectedLevel;
+  
+  bool _hasInitialized = false; // Prevent infinite loops in Consumer
 
   final List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   final List<String> semesters = ['First', 'Second'];
@@ -24,21 +27,68 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   @override
   void initState() {
     super.initState();
+    
+    // Initialize with smart defaults BEFORE first build
+    _initializeDefaults();
+    
+    // Load timetable after frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadTimeTable();
     });
   }
 
+  /// Initialize with smart defaults based on current context
+  void _initializeDefaults() {
+    final authProvider = context.read<AuthProvider>();
+    
+    // Get current day from DateTime
+    selectedDay = _getCurrentDay();
+    
+    // Get semester from auth provider with fallback
+    selectedSemester = authProvider.semester ?? 'First';
+    
+    // Get user level with fallback
+    selectedLevel = authProvider.user?.level ?? '100L';
+    
+    debugPrint('📅 Initialized: Day=$selectedDay, Semester=$selectedSemester, Level=$selectedLevel');
+  }
+
+  /// Get current day as short name (Mon, Tue, etc.)
+  String _getCurrentDay() {
+    final now = DateTime.now();
+    final currentDayName = _getDayName(now.weekday);
+    final shortDay = _getShortDayName(currentDayName);
+    
+    // If today is weekend, default to Monday
+    if (shortDay == 'Sat' || shortDay == 'Sun') {
+      return 'Mon';
+    }
+    
+    return shortDay;
+  }
+
   void _loadTimeTable() {
     final timetableProvider = context.read<TimeTableProvider>();
+    
+    debugPrint('📚 Loading timetable: Level=$selectedLevel, Semester=$selectedSemester, Day=${_getFullDayName(selectedDay)}');
+    
     timetableProvider.getEntriesForDay(
-        selectedLevel, selectedSemester, _getFullDayName(selectedDay));
+      selectedLevel,
+      selectedSemester,
+      _getFullDayName(selectedDay),
+    );
   }
 
   void _loadTimeTableWithParameters(String level, String semester) {
     final timetableProvider = context.read<TimeTableProvider>();
+    
+    debugPrint('📚 Loading timetable with params: Level=$level, Semester=$semester, Day=${_getFullDayName(selectedDay)}');
+    
     timetableProvider.getEntriesForDay(
-        level, semester, _getFullDayName(selectedDay));
+      level,
+      semester,
+      _getFullDayName(selectedDay),
+    );
   }
 
   String _getFullDayName(String shortDay) {
@@ -83,21 +133,49 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     }
   }
 
+  String _getDayName(int weekday) {
+    switch (weekday) {
+      case DateTime.monday:
+        return 'Monday';
+      case DateTime.tuesday:
+        return 'Tuesday';
+      case DateTime.wednesday:
+        return 'Wednesday';
+      case DateTime.thursday:
+        return 'Thursday';
+      case DateTime.friday:
+        return 'Friday';
+      case DateTime.saturday:
+        return 'Saturday';
+      case DateTime.sunday:
+        return 'Sunday';
+      default:
+        return 'Monday';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<TimeTableProvider, AuthProvider>(
       builder: (context, timetableProvider, authProvider, child) {
-        // Auto-select current user's level if available
-        final userLevel = authProvider.user?.level;
-        final userSemester = authProvider.semester;
-        if (userLevel != null && userLevel != selectedLevel) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-              selectedLevel = userLevel;
-              selectedSemester = userSemester ?? 'Second';
-            });
-            _loadTimeTable();
-          });
+        // Sync state with auth provider ONLY ONCE to prevent infinite loops
+        if (!_hasInitialized) {
+          final userLevel = authProvider.user?.level;
+          final userSemester = authProvider.semester;
+          
+          if (userLevel != null && userLevel != selectedLevel) {
+            // Update to user's actual level if it changed
+            selectedLevel = userLevel;
+            debugPrint('✓ Synced level to: $selectedLevel');
+          }
+          
+          if (userSemester != null && userSemester != selectedSemester) {
+            // Update to user's actual semester if it changed
+            selectedSemester = userSemester;
+            debugPrint('✓ Synced semester to: $selectedSemester');
+          }
+          
+          _hasInitialized = true;
         }
 
         return Scaffold(
@@ -145,6 +223,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
           body: Column(
             children: [
               SizedBox(height: 10),
+              
+              // Day selector
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: SingleChildScrollView(
@@ -152,6 +232,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                   child: Row(
                     children: days.map((day) {
                       bool isSelected = day == selectedDay;
+                      bool isToday = day == _getCurrentDay();
+                      
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -160,15 +242,21 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                           _loadTimeTable();
                         },
                         child: Container(
-                          width: 80, // fixed width for equal sizing
-                          height: 80, // fixed height for square/box look
+                          width: 80,
+                          height: 80,
                           margin: const EdgeInsets.only(right: 8),
-                          alignment: Alignment.center, // centers text inside
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? AppTheme.primaryTeal
                                 : Colors.white,
                             borderRadius: BorderRadius.circular(20),
+                            border: isToday && !isSelected
+                                ? Border.all(
+                                    color: AppTheme.primaryTeal,
+                                    width: 2,
+                                  )
+                                : null,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.05),
@@ -177,16 +265,31 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                               ),
                             ],
                           ),
-                          child: Text(
-                            day,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                              color: isSelected
-                                  ? Colors.white
-                                  : AppTheme.textColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                day,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  color: isSelected
+                                      ? Colors.white
+                                      : AppTheme.textColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (isToday && !isSelected)
+                                Container(
+                                  margin: const EdgeInsets.only(top: 4),
+                                  width: 4,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.primaryTeal,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                       );
@@ -213,8 +316,10 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                           child: DropdownButton<String>(
                             value: selectedSemester,
                             isExpanded: true,
-                            icon: const Icon(Icons.keyboard_arrow_down,
-                                color: Color(0xFF2E8B7B)),
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xFF2E8B7B),
+                            ),
                             style: GoogleFonts.poppins(
                               color: AppTheme.primaryTeal,
                               fontSize: 14,
@@ -226,11 +331,15 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                               );
                             }).toList(),
                             onChanged: (String? newValue) {
-                              setState(() {
-                                selectedSemester = newValue!;
-                              });
-                              _loadTimeTableWithParameters(
-                                  selectedLevel, newValue!);
+                              if (newValue != null) {
+                                setState(() {
+                                  selectedSemester = newValue;
+                                });
+                                _loadTimeTableWithParameters(
+                                  selectedLevel,
+                                  newValue,
+                                );
+                              }
                             },
                           ),
                         ),
@@ -239,7 +348,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                     const SizedBox(width: 16),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 10),
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         border: Border.all(color: const Color(0xFF8F9BB3)),
                         borderRadius: BorderRadius.circular(20),
@@ -248,7 +359,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            selectedLevel, // just display the chosen level
+                            selectedLevel,
                             style: GoogleFonts.poppins(
                               color: const Color(0xFF2E8B7B),
                               fontSize: 14,
@@ -256,8 +367,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                             ),
                           ),
                           const Icon(
-                            Icons
-                                .lock, // optional: show a lock to indicate it's fixed
+                            Icons.lock,
                             color: Color(0xFF2E8B7B),
                             size: 18,
                           ),
@@ -300,8 +410,11 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.event_busy,
-                            size: 64, color: Colors.grey[300]),
+                        Icon(
+                          Icons.event_busy,
+                          size: 64,
+                          color: Colors.grey[300],
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           'No classes on $selectedDay',
@@ -330,42 +443,37 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 Expanded(
                   child: ListView(
                     padding: const EdgeInsets.all(16),
-                    children: [
-                      ...timetableProvider.timeTableEntries.map((entry) {
-                        // Find the schedule for the selected day
-                        final daySchedule = entry.days.firstWhere(
-                          (day) => _getShortDayName(day.day) == selectedDay,
-                          orElse: () =>
-                              DaySchedule(day: '', startTime: '', endTime: ''),
-                        );
+                    children: timetableProvider.timeTableEntries.map((entry) {
+                      // Find the schedule for the selected day
+                      final daySchedule = entry.days.firstWhere(
+                        (day) => _getShortDayName(day.day) == selectedDay,
+                        orElse: () => DaySchedule(
+                          day: '',
+                          startTime: '',
+                          endTime: '',
+                        ),
+                      );
 
-                        // Check if this is the current class (for highlighting)
-                        final now = DateTime.now();
-                        final currentTime =
-                            '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-                        final isCurrentClass = _isCurrentClass(
-                            daySchedule.startTime,
-                            daySchedule.endTime,
-                            currentTime);
-                        final isToday = selectedDay ==
-                            _getShortDayName(_getDayName(now.weekday));
+                      // Check if this is the current class
+                      final now = DateTime.now();
+                      final currentTime =
+                          '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+                      final isCurrentClass = _isCurrentClass(
+                        daySchedule.startTime,
+                        daySchedule.endTime,
+                        currentTime,
+                      );
+                      final isToday = selectedDay == _getCurrentDay();
 
-                        return Column(
-                          children: [
-                            _buildScheduleCard(
-                              time:
-                                  _formatTimeForDisplay(daySchedule.startTime),
-                              endTime:
-                                  _formatTimeForDisplay(daySchedule.endTime),
-                              course: entry.courseCode,
-                              title: entry.courseTitle,
-                              lecturers: entry.lecturers,
-                              isHighlighted: isToday && isCurrentClass,
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ],
+                      return _buildScheduleCard(
+                        time: _formatTimeForDisplay(daySchedule.startTime),
+                        endTime: _formatTimeForDisplay(daySchedule.endTime),
+                        course: entry.courseCode,
+                        title: entry.courseTitle,
+                        lecturers: entry.lecturers,
+                        isHighlighted: isToday && isCurrentClass,
+                      );
+                    }).toList(),
                   ),
                 ),
             ],
@@ -382,6 +490,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       final current = _timeToMinutes(currentTime);
       return current >= start && current <= end;
     } catch (e) {
+      debugPrint('⚠️  Error checking current class: $e');
       return false;
     }
   }
@@ -404,6 +513,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       if (hour == 12) return '12:$minute PM';
       return '${hour - 12}:$minute PM';
     } catch (e) {
+      debugPrint('⚠️  Error formatting time: $e');
       return time;
     }
   }
@@ -417,6 +527,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     required bool isHighlighted,
   }) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
         color: Colors.white,
       ),
@@ -430,9 +541,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    time
-                        .split(' ')[0]
-                        .padLeft(5, '0'), // Ensure time is in 08:00 format
+                    time.split(' ')[0].padLeft(5, '0'),
                     style: GoogleFonts.poppins(
                       color: const Color(0xFF212525),
                       fontSize: 16,
@@ -458,114 +567,84 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
             ),
             const SizedBox(width: 16),
 
-            // Course details container
+            // Course details
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: isHighlighted
-                          ? AppTheme.primaryTeal
-                          : const Color(0xFF98FF98).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            course,
-                            style: GoogleFonts.poppins(
-                              color: isHighlighted
-                                  ? Colors.white
-                                  : const Color(0xFF2F327D),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            title,
-                            style: GoogleFonts.poppins(
-                              color: isHighlighted
-                                  ? Colors.white
-                                  : const Color(0xFF2F327D),
-                              fontSize: 14,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 8),
-
-                          // Lecturers
-                          ...lecturers
-                              .map((lecturer) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 2),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 6,
-                                          height: 6,
-                                          decoration: BoxDecoration(
-                                            color: isHighlighted
-                                                ? Colors.white
-                                                : const Color(0xFF2F327D),
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            lecturer,
-                                            style: GoogleFonts.poppins(
-                                              color: isHighlighted
-                                                  ? Colors.white70
-                                                  : const Color(0xFF2F327D),
-                                              fontSize: 12,
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                              .toList(),
-                        ],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isHighlighted
+                      ? AppTheme.primaryTeal
+                      : const Color(0xFF98FF98).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        course,
+                        style: GoogleFonts.poppins(
+                          color: isHighlighted
+                              ? Colors.white
+                              : const Color(0xFF2F327D),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 4),
+                      Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          color: isHighlighted
+                              ? Colors.white
+                              : const Color(0xFF2F327D),
+                          fontSize: 14,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Lecturers
+                      ...lecturers.map((lecturer) => Padding(
+                            padding: const EdgeInsets.only(bottom: 2),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: isHighlighted
+                                        ? Colors.white
+                                        : const Color(0xFF2F327D),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    lecturer,
+                                    style: GoogleFonts.poppins(
+                                      color: isHighlighted
+                                          ? Colors.white70
+                                          : const Color(0xFF2F327D),
+                                      fontSize: 12,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 14,
-                  )
-                ],
+                ),
               ),
             ),
           ],
         ),
       ),
     );
-  } // Helper method to get day name from weekday number
-
-  String _getDayName(int weekday) {
-    switch (weekday) {
-      case DateTime.monday:
-        return 'Monday';
-      case DateTime.tuesday:
-        return 'Tuesday';
-      case DateTime.wednesday:
-        return 'Wednesday';
-      case DateTime.thursday:
-        return 'Thursday';
-      case DateTime.friday:
-        return 'Friday';
-      case DateTime.saturday:
-        return 'Saturday';
-      case DateTime.sunday:
-        return 'Sunday';
-      default:
-        return 'Monday';
-    }
   }
 }
